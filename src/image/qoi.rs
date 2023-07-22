@@ -22,7 +22,7 @@ impl QoiParser {
         let mut g = 0u8;
         let mut b = 0u8;
         let mut a = 255u8;
-        let mut pixel: Color = Color::from_rgba32(255);
+        let mut pixel: Color = Color::from_rgba32_linear(255);
         let mut exit = false;
         let width = Self::read_u32(iter)?;
         let height = Self::read_u32(iter)?;
@@ -30,7 +30,7 @@ impl QoiParser {
         let colorspace = iter.next()?;
         let mut index: usize = 0;
         let mut image = Box::new(RGBA32Image::new(width as usize, height as usize));
-        let mut table: [Color; 64] = [Color::zero; 64];
+        let mut table: [Color; 64] = [Color::ZERO; 64];
         loop {
             let value = iter.next();
             if let Some(&byte) = value {
@@ -80,7 +80,11 @@ impl QoiParser {
                         index += 1;
                         continue;
                     }
-                    pixel = Color::from_rgba(r, g, b, a);
+                    match colorspace {
+                        0 => pixel = Color::from_srgba(r, g, b, a),
+                        1 => pixel = Color::from_rgba_linear(r, g, b, a),
+                        _ => panic!(),
+                    }
                     table[((r * 3 + g * 5 + b * 7 + a * 11) % 64) as usize] = pixel;
                     image.set_pixel_index(index, pixel);
                     index += 1;
