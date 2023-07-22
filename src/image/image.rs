@@ -1,6 +1,6 @@
 pub trait Image {
-    fn get_pixel(pixel: (i32, i32)) -> Color;
-    fn set_pixel(pixel: (i32, i32), color: Color);
+    fn get_pixel(&self, pixel: (i32, i32)) -> Color;
+    fn set_pixel(&mut self, pixel: (i32, i32), color: Color);
 }
 
 pub struct Color {
