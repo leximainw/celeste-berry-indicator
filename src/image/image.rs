@@ -21,6 +21,13 @@ pub struct Color {
 }
 
 impl Color {
+    pub const zero: Color = Color{
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 0,
+    };
+
     pub fn from_rgba(r: u8, g: u8, b: u8, a: u8) -> Color {
         Color {
             r: r as u32 * 0x01010101,

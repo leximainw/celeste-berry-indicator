@@ -18,17 +18,19 @@ impl QoiParser {
     }
 
     fn parse_image(iter: &mut dyn Iterator<Item=&u8>) -> Option<Box<dyn Image>> {
-        let mut r: u8;
-        let mut g: u8;
-        let mut b: u8;
+        let mut r = 0u8;
+        let mut g = 0u8;
+        let mut b = 0u8;
         let mut a = 255u8;
         let mut pixel: Color = Color::from_rgba32(255);
         let mut exit = false;
         let width = Self::read_u32(iter)?;
         let height = Self::read_u32(iter)?;
         let channels = iter.next()?;
+        let colorspace = iter.next()?;
         let mut index: usize = 0;
         let mut image = Box::new(RGBA32Image::new(width as usize, height as usize));
+        let mut table: [Color; 64] = [Color::zero; 64];
         loop {
             let value = iter.next();
             if let Some(&byte) = value {
@@ -41,35 +43,47 @@ impl QoiParser {
                 } else {
                     if exit {
                         exit = false;
-                        // todo: emit hash pixel
+                        image.set_pixel_index(index, pixel);
+                        index += 1;
                     }
                     if byte == 0xff {   // rgba
                         r = *iter.next()?;
                         g = *iter.next()?;
                         b = *iter.next()?;
                         a = *iter.next()?;
-                        pixel = Color::from_rgba(r, g, b, a);
-                        image.set_pixel_index(index, pixel);
-                        index += 1;
                     } else if byte == 0xfe {   // rgb
                         r = *iter.next()?;
                         g = *iter.next()?;
                         b = *iter.next()?;
-                        pixel = Color::from_rgba(r, g, b, a);
-                        image.set_pixel_index(index, pixel);
-                        index += 1;
                     } else if byte >= 0xc0 {   // run
                         let length = byte - 191;
                         for i in 0..length {
                             image.set_pixel_index(index, pixel);
                             index += 1;
                         }
+                        continue;
                     } else if byte >= 0x80 {   // luma
-                        let dg = byte as i32 - 160;
+                        let dg = byte - 160;
                         let byte = iter.next()?;
-                        let dr_dg = (byte >> 4) as i32 - 8;
-                        let db_dg = (byte & 15) as i32 - 8;
+                        let dr = (byte >> 4) - 8 + dg;
+                        let db = (byte & 15) - 8 + dg;
+                        r += dr;
+                        g += dg;
+                        b += db;
+                    } else if byte >= 0x40 {   // diff
+                        r += (byte >> 4 & 3) - 2;
+                        g += (byte >> 2 & 3) - 2;
+                        b += (byte & 3) - 2;
+                    } else {
+                        pixel = table[byte as usize];
+                        image.set_pixel_index(index, pixel);
+                        index += 1;
+                        continue;
                     }
+                    pixel = Color::from_rgba(r, g, b, a);
+                    table[((r * 3 + g * 5 + b * 7 + a * 11) % 64) as usize] = pixel;
+                    image.set_pixel_index(index, pixel);
+                    index += 1;
                 }
             } else {
                 None?;
