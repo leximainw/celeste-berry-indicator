@@ -1,6 +1,6 @@
 use super::Image;
 
 pub trait Parser {
-    fn from_bytes(iter: &dyn Iterator<Item=u8>) -> Box<dyn Image>;
+    fn from_bytes(iter: Box<dyn Iterator<Item=u8>>) -> Result<Box<dyn Image>, Box<dyn std::error::Error>>;
     fn to_bytes<'a>(image: &'a dyn Image) -> &'a dyn Iterator<Item=u8>;
 }
