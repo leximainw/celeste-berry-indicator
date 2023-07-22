@@ -83,7 +83,7 @@ impl QoiParser {
                     match colorspace {
                         0 => pixel = Color::from_srgba(r, g, b, a),
                         1 => pixel = Color::from_rgba_linear(r, g, b, a),
-                        _ => panic!(),
+                        _ => None?,
                     }
                     table[((r * 3 + g * 5 + b * 7 + a * 11) % 64) as usize] = pixel;
                     image.set_pixel_index(index, pixel);
