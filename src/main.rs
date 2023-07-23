@@ -10,6 +10,7 @@ use berries::{
 };
 
 use image::{
+    BmpParser,
     Parser,
     QoiParser,
 };
@@ -33,5 +34,5 @@ fn main() {
             GoldBerry::draw(&mut *canvas, x * 14 + 5, y * 17 + 35);
         }
     }
-    std::fs::write("image.qoi", QoiParser::to_bytes(&*image)).unwrap();
+    std::fs::write("image.bmp", BmpParser::to_bytes(&*image)).unwrap();
 }
