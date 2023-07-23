@@ -6,7 +6,7 @@ use super::{
 pub struct WingedGoldenBerry;
 
 impl Drawable for WingedGoldenBerry {
-    fn draw(canvas: &mut dyn Canvas, x: usize, y: usize) {
+    fn draw(&self, canvas: &mut dyn Canvas, x: usize, y: usize) {
         const BLK: u32 = 0x000000ff;
         const GRY: u32 = 0xcbdbfcff;
         const RED: u32 = 0xbc1616ff;

@@ -9,7 +9,7 @@ pub trait Canvas {
 }
 
 pub trait Drawable {
-    fn draw(canvas: &mut dyn Canvas, x: usize, y: usize);
+    fn draw(&self, canvas: &mut dyn Canvas, x: usize, y: usize);
 
     fn draw_sprite(canvas: &mut dyn Canvas, x: usize, y: usize, width: usize, height: usize, pixels: &[u32]) {
         for u in 0..width {

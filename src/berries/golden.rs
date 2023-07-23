@@ -6,7 +6,7 @@ use super::{
 pub struct GoldenBerry;
 
 impl Drawable for GoldenBerry {
-    fn draw(canvas: &mut dyn Canvas, x: usize, y: usize) {
+    fn draw(&self, canvas: &mut dyn Canvas, x: usize, y: usize) {
         const BLACK: u32 = 0x000000ff;
         const   RED: u32 = 0xbc1616ff;
         const YELL0: u32 = 0x755716ff;
