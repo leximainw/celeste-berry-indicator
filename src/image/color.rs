@@ -144,4 +144,29 @@ impl Color {
     pub fn to_rgba32_linear(&self) -> u32 {
         self.r >> 24 << 24 | self.g >> 24 << 16 | self.b >> 24 << 8 | self.a >> 24
     }
+
+    pub fn average(left: Color, right: Color) -> Color {
+        Color{
+            r: Self::average_channel(left.r, right.r),
+            g: Self::average_channel(left.g, right.g),
+            b: Self::average_channel(left.b, right.b),
+            a: Self::average_channel(left.a, right.a),
+        }
+    }
+
+    pub fn desaturate(&self) -> Color {
+        let low = u32::min(self.r, u32::min(self.g, self.b));
+        let high = u32::max(self.r, u32::max(self.g, self.b));
+        let mid = Self::average_channel(low, high);
+        Color{
+            r: Self::average_channel(self.r, mid),
+            g: Self::average_channel(self.g, mid),
+            b: Self::average_channel(self.b, mid),
+            a: self.a,
+        }
+    }
+
+    fn average_channel(left: u32, right: u32) -> u32 {
+        left / 2 + right / 2 + (left & right & 1)
+    }
 }
