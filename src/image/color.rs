@@ -107,8 +107,8 @@ impl Color {
     }
 
     fn lookup_srgb(value: u32) -> u8 {
-        let mut curr = 128u8;
-        let mut delta = 128u8;
+        let mut curr = 128_u8;
+        let mut delta = 128_u8;
         while delta != 0 {
             delta /= 2;
             if value <= Self::LOOKUP_TABLE[curr as usize] {

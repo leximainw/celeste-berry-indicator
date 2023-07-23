@@ -18,10 +18,10 @@ impl QoiParser {
     }
 
     fn parse_image(iter: &mut dyn Iterator<Item=&u8>) -> Option<Box<dyn Image>> {
-        let mut r = 0u8;
-        let mut g = 0u8;
-        let mut b = 0u8;
-        let mut a = 255u8;
+        let mut r = 0_u8;
+        let mut g = 0_u8;
+        let mut b = 0_u8;
+        let mut a = 255_u8;
         let mut pixel: Color = Color::from_rgba32_linear(255);
         let mut exit = false;
         let width = Self::read_u32(iter)?;
@@ -130,8 +130,8 @@ impl Parser for QoiParser {
         vec.push(4);   // TODO: support RGB format
         vec.push(0);   // TODO: support linear colorspace
         let size = image.get_width() * image.get_height();
-        let mut run = 0u8;
-        let mut pixel = 255u32;
+        let mut run = 0_u8;
+        let mut pixel = 255_u32;
         let mut last_pixel;
         let mut table: [u32; 64] = [0; 64];
         for i in 0..size {
