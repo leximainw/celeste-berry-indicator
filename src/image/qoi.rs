@@ -137,7 +137,7 @@ impl Parser for QoiParser {
         for i in 0..size {
             last_pixel = pixel;
             pixel = Color::to_srgba32(image.get_pixel_index(i));
-            if pixel == last_pixel {
+            if pixel == last_pixel {   // run
                 if last_pixel == 255 {
                     table[53] = 255;
                 }
@@ -154,21 +154,21 @@ impl Parser for QoiParser {
             match pixel.to_be_bytes() {
                 [r, g, b, a] => {
                     let index = ((r * 3 + g * 5 + b * 7 + a * 11) % 64) as usize;
-                    if table[index] == pixel {
+                    if table[index] == pixel {   // index
                         vec.push(index as u8);
                         continue;
                     }
                     table[index] = pixel;
                     match last_pixel.to_be_bytes() {
                         [lr, lg, lb, la] => {
-                            if a != la {
+                            if a != la {   // rgba
                                 vec.extend_from_slice(&[255, r, g, b, a]);
                                 continue;
                             }
                             let dr = r as i32 - lr as i32;
                             let dg = g as i32 - lg as i32;
                             let db = b as i32 - lb as i32;
-                            if (-2..2).contains(&dr) && (-2..2).contains(&dg) && (-2..2).contains(&db) {
+                            if (-2..2).contains(&dr) && (-2..2).contains(&dg) && (-2..2).contains(&db) {   // diff
                                 let dr = (dr + 2) as u8;
                                 let dg = (dg + 2) as u8;
                                 let db = (db + 2) as u8;
@@ -177,7 +177,7 @@ impl Parser for QoiParser {
                             }
                             let dr_dg = dr - dg;
                             let db_dg = db - dg;
-                            if (-32..32).contains(&dg) && (-8..8).contains(&dr_dg) && (-8..8).contains(&db_dg) {
+                            if (-32..32).contains(&dg) && (-8..8).contains(&dr_dg) && (-8..8).contains(&db_dg) {   // luma
                                 let dg = (dg + 32) as u8;
                                 let dr_dg = (dr_dg + 8) as u8;
                                 let db_dg = (db_dg + 8) as u8;
@@ -185,7 +185,7 @@ impl Parser for QoiParser {
                                 vec.push(dr_dg << 4 | db_dg);
                                 continue;
                             }
-                            vec.extend_from_slice(&[254, r, g, b]);
+                            vec.extend_from_slice(&[254, r, g, b]);   // rgb
                         }
                     }
                 }
