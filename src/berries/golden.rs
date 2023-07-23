@@ -8,11 +8,11 @@ pub struct GoldenBerry;
 impl Drawable for GoldenBerry {
     fn draw(canvas: &mut dyn Canvas, x: usize, y: usize) {
         const BLACK: u32 = 0x000000ff;
+        const   RED: u32 = 0xbc1616ff;
         const YELL0: u32 = 0x755716ff;
         const YELL1: u32 = 0x8a760fff;
         const YELL2: u32 = 0xdec02aff;
         const YELL3: u32 = 0xffee42ff;
-        const   RED: u32 = 0xbc1616ff;
 
         <Self as Drawable>::draw_sprite(canvas, x, y, 12, 15, &[
             BLACK, BLACK,     0,     0,     0, BLACK, BLACK,     0,     0,     0, BLACK, BLACK,
