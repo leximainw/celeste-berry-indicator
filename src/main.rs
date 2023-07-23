@@ -31,40 +31,53 @@ fn main() {
     let berries: BerryTracker = BerryTracker{
         levels: [
             Level{
-                berries: vec![true; 20],
-                goldens: [true, false, true],
+                berries: vec![false; 20],
+                goldens: [false, false, false],
             },
             Level{
-                berries: vec![true; 18],
-                goldens: [true, false, true],
+                berries: vec![false; 18],
+                goldens: [false, false, false],
             },
             Level{
-                berries: vec![true; 25],
-                goldens: [true, false, false],
+                berries: vec![
+                    false, false,  true, false, false, false, false, false, false, false, false,
+                    false, false, false, false, false, false, false,
+                    false, false, false, false,
+                    false, false, false,
+                ],
+                goldens: [false, false, false],
             },
             Level{
-                berries: vec![true; 29],
-                goldens: [true, false, false],
+                berries: vec![false; 29],
+                goldens: [false, false, false],
             },
             Level{
-                berries: vec![true; 31],
-                goldens: [true, false, false],
+                berries: vec![false; 31],
+                goldens: [false, false, false],
             },
             Level{
                 berries: vec![],
                 goldens: [false, false, false],
             },
             Level{
-                berries: vec![true; 47],
+                berries: vec![
+                    false, false, false, false,
+                    false, false, false, false, false, false,
+                    false, false, false, false, false, false,
+                    false, false, false, false, false, false, false, false,
+                    true, false, false, false, false, false, false, false,
+                    false, false, false, false, false, false, false, false,
+                    false, false, false, false, false, false, false,
+                ],
                 goldens: [false, false, false],
             },
             Level{
-                berries: vec![true; 5],
+                berries: vec![false; 5],
                 goldens: [false, false, false],
             },
         ],
-        ch1winged: true,
-        ch9moon: true,
+        ch1winged: false,
+        ch9moon: false,
         ch9golden: false,
     };
 
