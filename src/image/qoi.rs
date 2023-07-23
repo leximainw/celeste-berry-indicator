@@ -136,7 +136,7 @@ impl Parser for QoiParser {
         let mut table: [u32; 64] = [0; 64];
         for i in 0..size {
             last_pixel = pixel;
-            pixel = Color::to_srgba32(image.get_pixel_index(i));
+            pixel = image.get_pixel_index(i).to_srgba32();
             if pixel == last_pixel {   // run
                 if last_pixel == 255 {
                     table[53] = 255;

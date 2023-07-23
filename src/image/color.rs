@@ -102,8 +102,8 @@ impl Color {
         }
     }
 
-    pub fn to_srgba32(color: Color) -> u32 {
-        (Self::lookup_srgb(color.r) as u32) << 24 | (Self::lookup_srgb(color.g) as u32) << 16 | (Self::lookup_srgb(color.b) as u32) << 8 | color.a >> 24
+    pub fn to_srgba32(&self) -> u32 {
+        (Self::lookup_srgb(self.r) as u32) << 24 | (Self::lookup_srgb(self.g) as u32) << 16 | (Self::lookup_srgb(self.b) as u32) << 8 | self.a >> 24
     }
 
     fn lookup_srgb(value: u32) -> u8 {
@@ -141,7 +141,7 @@ impl Color {
         }
     }
 
-    pub fn to_rgba32_linear(color: Color) -> u32 {
-        color.r >> 24 << 24 | color.g >> 24 << 16 | color.b >> 24 << 8 | color.a >> 24
+    pub fn to_rgba32_linear(&self) -> u32 {
+        self.r >> 24 << 24 | self.g >> 24 << 16 | self.b >> 24 << 8 | self.a >> 24
     }
 }

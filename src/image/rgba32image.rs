@@ -34,7 +34,7 @@ impl Image for RGBA32Image {
     }
 
     fn set_pixel(&mut self, pixel: (usize, usize), color: Color) {
-        self.pixels[pixel.0 + pixel.1 * self.width] = Color::to_srgba32(color);
+        self.pixels[pixel.0 + pixel.1 * self.width] = color.to_srgba32();
     }
 
     fn get_pixel_index(&self, index: usize) -> Color {
@@ -42,7 +42,7 @@ impl Image for RGBA32Image {
     }
 
     fn set_pixel_index(&mut self, index: usize, color: Color) {
-        self.pixels[index] = Color::to_srgba32(color)
+        self.pixels[index] = color.to_srgba32();
     }
 
     fn to_rgba32_image(self: Box<Self>) -> Self {
