@@ -30,7 +30,7 @@ fn main() {
     let mut image = QoiParser::from_bytes(&mut data.iter()).unwrap();
     let mut canvas = OpaqueCanvas::from_image(&mut *image);
     let mut text = TextField::new();
-    text.set_text("175x".to_string());
+    text.set_text(format!("{: >3}x", 175));
     text.draw(&mut canvas, 11, 9);
     Berry.draw(&mut canvas, 29, 6);
     WingedGoldBerry.draw(&mut canvas, 42, 5);
