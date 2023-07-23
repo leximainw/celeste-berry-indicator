@@ -132,7 +132,7 @@ impl Parser for QoiParser {
         let size = image.get_width() * image.get_height();
         let mut run = 0u8;
         let mut pixel = 255u32;
-        let mut last_pixel = pixel;
+        let mut last_pixel;
         let mut table: [u32; 64] = [0; 64];
         for i in 0..size {
             last_pixel = pixel;
@@ -148,7 +148,7 @@ impl Parser for QoiParser {
                 }
                 continue;
             } else if run != 0 {
-                vec.push(run + 192);
+                vec.push(run + 191);
                 run = 0;
             }
             match pixel.to_be_bytes() {
