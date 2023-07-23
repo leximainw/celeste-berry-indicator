@@ -122,7 +122,7 @@ impl Parser for QoiParser {
         Ok(Self::parse_image(&mut *iter).ok_or("unexpected end of file")?)
     }
 
-    fn to_bytes<'a>(image: &'a dyn Image) -> Vec<u8> {
+    fn to_bytes(image: &dyn Image) -> Vec<u8> {
         let mut vec = Vec::new();
         vec.extend_from_slice(b"qoif");
         vec.extend_from_slice(&(image.get_width() as u32).to_be_bytes());
