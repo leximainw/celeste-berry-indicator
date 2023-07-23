@@ -34,5 +34,4 @@ fn main() {
         }
     }
     std::fs::write("image.qoi", QoiParser::to_bytes(&*image)).unwrap();
-    //println!("Bytes: {:?}", QoiParser::to_bytes(&*image));
 }
