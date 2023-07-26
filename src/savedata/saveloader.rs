@@ -63,7 +63,7 @@ impl SaveLoader {
 
     const CH1_WINGED: &'static str = "end:4";
     const CH9_MOON: &'static str = "j-19:9";
-    const CH9_GOLDEN: &'static str = "---";
+    const CH9_GOLDEN: &'static str = "a-00:449";
 
     pub fn load_save(file: &str) -> Result<BerryTracker, Box<dyn std::error::Error>> {
         Ok(Self::load_data(std::fs::read_to_string(file)?))
