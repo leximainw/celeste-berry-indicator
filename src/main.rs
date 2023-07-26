@@ -60,7 +60,7 @@ fn main() {
         } else {
             text.set_text(death_text);
             text.draw(&mut canvas, 26 - death_offset, 23);
-            Skull.draw(&mut canvas, 33, 20);
+            Skull.draw(&mut canvas, 36 - death_offset, 20);
         }
     }
     WingedGoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch1winged), 42, 5);
