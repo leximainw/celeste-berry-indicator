@@ -20,13 +20,10 @@ use image::{
     Image,
     Parser,
     QoiParser,
+    RGBA32Image,
 };
 
-use savedata::{
-    BerryTracker,
-    BerryTrackerLevel as Level,
-    SaveLoader,
-};
+use savedata::SaveLoader;
 
 fn main() {
     let berries = SaveLoader::load_save("/home/leximainw/.local/share/Celeste/Saves/0.celeste").unwrap();
@@ -48,7 +45,7 @@ fn main() {
             GoldBerry.draw(&mut *create_canvas(&mut *image, berries.levels[x].goldens[y]), x * 14 + 5, y * 17 + 35);
         }
     }
-    std::fs::write("image.bmp", BmpParser::to_bytes(&*image)).unwrap();
+    std::fs::write("image.bmp", BmpParser::to_bytes(&scale_image(&*image, 4))).unwrap();
 }
 
 fn create_canvas(image: &mut dyn Image, active: bool) -> Box<dyn Canvas + '_> {
@@ -57,4 +54,22 @@ fn create_canvas(image: &mut dyn Image, active: bool) -> Box<dyn Canvas + '_> {
     } else {
         Box::new(FadedCanvas::from_image(image)) as Box<dyn Canvas>
     }
+}
+
+fn scale_image(image: &dyn Image, scale: usize) -> RGBA32Image {
+    let mut scaled = RGBA32Image::new(image.get_width() * scale, image.get_height() * scale);
+    if scale == 0 {
+        return scaled;
+    }
+    for x in 0..image.get_width() {
+        for y in 0..image.get_height() {
+            let color = image.get_pixel((x, y));
+            for u in 0..scale {
+                for v in 0..scale {
+                    scaled.set_pixel((x * scale + u, y * scale + v), color);
+                }
+            }
+        }
+    }
+    scaled
 }
