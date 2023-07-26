@@ -25,62 +25,11 @@ use image::{
 use savedata::{
     BerryTracker,
     BerryTrackerLevel as Level,
+    SaveLoader,
 };
 
 fn main() {
-    let berries: BerryTracker = BerryTracker{
-        levels: [
-            Level{
-                berries: vec![false; 20],
-                goldens: [false, false, false],
-            },
-            Level{
-                berries: vec![false; 18],
-                goldens: [false, false, false],
-            },
-            Level{
-                berries: vec![
-                    false, false,  true, false, false, false, false, false, false, false, false,
-                    false, false, false, false, false, false, false,
-                    false, false, false, false,
-                    false, false, false,
-                ],
-                goldens: [false, false, false],
-            },
-            Level{
-                berries: vec![false; 29],
-                goldens: [false, false, false],
-            },
-            Level{
-                berries: vec![false; 31],
-                goldens: [false, false, false],
-            },
-            Level{
-                berries: vec![],
-                goldens: [false, false, false],
-            },
-            Level{
-                berries: vec![
-                    false, false, false, false,
-                    false, false, false, false, false, false,
-                    false, false, false, false, false, false,
-                    false, false, false, false, false, false, false, false,
-                    true,  false, false, false, false, false, false, false,
-                    false, false, false, false, false, false, false, false,
-                    false, false, false, false, false, false, false,
-                ],
-                goldens: [false, false, false],
-            },
-            Level{
-                berries: vec![false; 5],
-                goldens: [false, false, false],
-            },
-        ],
-        ch1winged: false,
-        ch9moon: false,
-        ch9golden: false,
-    };
-
+    let berries = SaveLoader::load_save("/home/leximainw/.local/share/Celeste/Saves/0.celeste").unwrap();
     let data = b"qoif\0\0\0\x78\0\0\0\x55\x04\0\xfe\x5b\xce\xfa\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\xfe\xf5\xa9\xb8\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\xfe\xff\xff\xff\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\x29\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\x22\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\0\0\0\0\0\0\0\x01";
     let mut image = QoiParser::from_bytes(&mut data.iter()).unwrap();
     let mut canvas = OpaqueCanvas::from_image(&mut *image);

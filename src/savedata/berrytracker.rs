@@ -11,6 +11,48 @@ pub struct BerryTrackerLevel {
 }
 
 impl BerryTracker {
+    pub fn new() -> BerryTracker {
+        BerryTracker{
+            levels: [
+                BerryTrackerLevel{
+                    berries: Vec::new(),
+                    goldens: [false; 3],
+                },
+                BerryTrackerLevel{
+                    berries: Vec::new(),
+                    goldens: [false; 3],
+                },
+                BerryTrackerLevel{
+                    berries: Vec::new(),
+                    goldens: [false; 3],
+                },
+                BerryTrackerLevel{
+                    berries: Vec::new(),
+                    goldens: [false; 3],
+                },
+                BerryTrackerLevel{
+                    berries: Vec::new(),
+                    goldens: [false; 3],
+                },
+                BerryTrackerLevel{
+                    berries: Vec::new(),
+                    goldens: [false; 3],
+                },
+                BerryTrackerLevel{
+                    berries: Vec::new(),
+                    goldens: [false; 3],
+                },
+                BerryTrackerLevel{
+                    berries: Vec::new(),
+                    goldens: [false; 3],
+                },
+            ],
+            ch1winged: false,
+            ch9moon: false,
+            ch9golden: false,
+        }
+    }
+
     pub fn red_berry_count(&self) -> usize {
         self.levels.iter().map(|x| x.berries.iter().filter(|&&x| x).count()).sum()
     }
