@@ -74,6 +74,13 @@ impl SaveLoader {
         for (idx, berry_ids) in Self::BERRY_IDS.iter().enumerate() {
             berries.levels[idx].berries.extend(berry_ids.iter().map(|x| false))
         }
+        let total_deaths = Self::find_tag(&xml, "TotalDeaths");
+        if let Some(deaths) = total_deaths.0 {
+            match deaths.1.parse::<usize>() {
+                Ok(deaths) => berries.deaths = deaths,
+                Err(_) => {},
+            }
+        }
         let areas = Self::find_tag(&xml, "Areas");
         if let Some(areas) = areas.0 {
             let mut remain = areas.1;

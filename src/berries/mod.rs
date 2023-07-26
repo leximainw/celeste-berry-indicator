@@ -5,6 +5,7 @@ mod berry;
 mod golden;
 mod golden_winged;
 mod moon;
+mod skull;
 
 pub use drawing::Canvas as Canvas;
 pub use drawing::Drawable as Drawable;
@@ -16,3 +17,4 @@ pub use berry::Strawberry as Berry;
 pub use golden::GoldenBerry as GoldBerry;
 pub use golden_winged::WingedGoldenBerry as WingedGoldBerry;
 pub use moon::MoonBerry as MoonBerry;
+pub use skull::Skull as Skull;

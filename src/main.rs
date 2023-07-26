@@ -13,6 +13,7 @@ use berries::{
     GoldBerry,
     WingedGoldBerry,
     MoonBerry,
+    Skull,
 };
 
 use image::{
@@ -31,12 +32,37 @@ fn main() {
     let mut image = QoiParser::from_bytes(&mut data.iter()).unwrap();
     let mut canvas = OpaqueCanvas::from_image(&mut *image);
     let mut text = TextField::new();
+    let show_deaths = false;
     text.set_text(format!("{: >3}x", berries.red_berry_count()));
     text.draw(&mut canvas, 11, 9);
+    let (death_text, death_offset) = if !show_deaths {
+        ("".to_string(), 0)
+    } else if berries.deaths >= 10000000 {
+        ("".to_string(), 20)
+    } else {
+        let text = if berries.deaths >= 1000000 {
+            format!("{}", berries.deaths)
+        } else {
+            format!("{}x", berries.deaths)
+        };
+        let len = text.len();
+        (text, len * 2 + 9)
+    };
     Berry.draw(&mut canvas, 29, 6);
-    BerryRow::from_vec(berries.levels[0..3].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 25, 22);
-    BerryRow::from_vec(berries.levels[3..5].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 28, 26);
-    BerryRow::from_vec(berries.levels[6..8].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 32, 30);
+    BerryRow::from_vec(berries.levels[0..3].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 25 + death_offset, 22);
+    BerryRow::from_vec(berries.levels[3..5].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 28 + death_offset, 26);
+    BerryRow::from_vec(berries.levels[6..8].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 32 + death_offset, 30);
+    if show_deaths {
+        if death_offset == 20 {
+            for i in 0..3 {
+                Skull.draw(&mut canvas, i * 12 + 6, 20);
+            }
+        } else {
+            text.set_text(death_text);
+            text.draw(&mut canvas, 26 - death_offset, 23);
+            Skull.draw(&mut canvas, 33, 20);
+        }
+    }
     WingedGoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch1winged), 42, 5);
     MoonBerry.draw(&mut *create_canvas(&mut *image, berries.ch9moon), 78, 6);
     GoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch9golden), 96, 4);

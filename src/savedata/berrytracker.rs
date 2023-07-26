@@ -3,6 +3,7 @@ pub struct BerryTracker {
     pub ch1winged: bool,
     pub ch9moon: bool,
     pub ch9golden: bool,
+    pub deaths: usize,
 }
 
 pub struct BerryTrackerLevel {
@@ -50,6 +51,7 @@ impl BerryTracker {
             ch1winged: false,
             ch9moon: false,
             ch9golden: false,
+            deaths: 0,
         }
     }
 
