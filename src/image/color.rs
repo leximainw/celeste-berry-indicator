@@ -100,20 +100,32 @@ impl Color {
         self.a
     }
 
-    pub fn set_red(&mut self, value: u32) {
-        self.r = value;
+    pub fn set_red(&self, value: u32) -> Color {
+        Color{
+            r: value,
+            ..*self
+        }
     }
 
-    pub fn set_green(&mut self, value: u32) {
-        self.g = value;
+    pub fn set_green(&self, value: u32) -> Color {
+        Color{
+            g: value,
+            ..*self
+        }
     }
 
-    pub fn set_blue(&mut self, value: u32) {
-        self.b = value;
+    pub fn set_blue(&self, value: u32) -> Color {
+        Color{
+            b: value,
+            ..*self
+        }
     }
 
-    pub fn set_alpha(&mut self, value: u32) {
-        self.a = value;
+    pub fn set_alpha(&self, value: u32) -> Color {
+        Color{
+            a: value,
+            ..*self
+        }
     }
 
     pub fn from_srgba(r: u8, g: u8, b: u8, a: u8) -> Color {
