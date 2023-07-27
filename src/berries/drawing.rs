@@ -63,6 +63,8 @@ impl Canvas for FadedCanvas<'_> {
     }
 
     fn set_pixel(&mut self, x: usize, y: usize, value: u32) {
-        self.image.set_pixel((x, y), Color::average(self.image.get_pixel((x, y)), Color::from_srgba32(value).desaturate()))
+        let value = Color::from_srgba32(value).desaturate();
+        let value = value.set_alpha(value.get_alpha() / 2);
+        self.image.set_pixel((x, y), Color::alpha_over(value, self.image.get_pixel((x, y))));
     }
 }
