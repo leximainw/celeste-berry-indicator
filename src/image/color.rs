@@ -1,4 +1,4 @@
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Color {
     r: u32,
     g: u32,
@@ -84,6 +84,38 @@ impl Color {
         0xf1ccf889, 0xf3f4d1b2, 0xf61f59a6, 0xf84c90fb, 0xfa7c7842, 0xfcaf1010, 0xfee458f5, 0xffffffff,
     ];
 
+    pub fn get_red(&self) -> u32 {
+        self.r
+    }
+
+    pub fn get_green(&self) -> u32 {
+        self.g
+    }
+
+    pub fn get_blue(&self) -> u32 {
+        self.b
+    }
+
+    pub fn get_alpha(&self) -> u32 {
+        self.a
+    }
+
+    pub fn set_red(&mut self, value: u32) {
+        self.r = value;
+    }
+
+    pub fn set_green(&mut self, value: u32) {
+        self.g = value;
+    }
+
+    pub fn set_blue(&mut self, value: u32) {
+        self.b = value;
+    }
+
+    pub fn set_alpha(&mut self, value: u32) {
+        self.a = value;
+    }
+
     pub fn from_srgba(r: u8, g: u8, b: u8, a: u8) -> Color {
         Color{
             r: Self::GAMMA_TABLE[r as usize],
@@ -154,6 +186,44 @@ impl Color {
         }
     }
 
+    pub fn lerp(left: Color, right: Color, mut frac: (u32, std::num::NonZeroU32)) -> Color {
+        if frac.0 > frac.1.into() {
+            frac = (frac.1.into(), frac.1);
+        }
+        Color{
+            r: Self::lerp_channel(left.r, right.r, frac),
+            g: Self::lerp_channel(left.g, right.g, frac),
+            b: Self::lerp_channel(left.b, right.b, frac),
+            a: Self::lerp_channel(left.a, right.a, frac),
+        }
+    }
+
+    pub fn alpha_over(over: Color, under: Color) -> Color {
+        const MAX: u64 = u32::MAX as u64;
+        const MAX_SQUARED: u64 = MAX * MAX;
+        let over_alpha = over.a as u64;
+        let under_alpha = under.a as u64;
+        let over_inv_alpha = MAX - over_alpha;
+        let under_inv_alpha = MAX - under_alpha;
+        let inv_alpha = over_inv_alpha * under_inv_alpha;
+        let alpha = (MAX_SQUARED - inv_alpha) / MAX;
+        let rgb: [(u32, u32); 3] = [(over.r, under.r), (over.g, under.g), (over.b, under.b)];
+        let rgb = rgb.iter().map(|&(over, under)| {
+            let over_value = over as u64 * over_alpha;
+            let under_value = under as u64 * over_inv_alpha;
+            let under_int = under_value / MAX * under_alpha;
+            let under_frac = under_value % MAX * under_alpha / MAX;
+            let under_value = under_int + under_frac;
+            (over_value / MAX + under_value / MAX + (over_value % MAX + under_value % MAX) / MAX) as u32
+        }).collect::<Vec<u32>>();
+        Color{
+            r: rgb[0],
+            g: rgb[1],
+            b: rgb[2],
+            a: alpha as u32,
+        }
+    }
+
     pub fn desaturate(&self) -> Color {
         let low = u32::min(self.r, u32::min(self.g, self.b));
         let high = u32::max(self.r, u32::max(self.g, self.b));
@@ -168,5 +238,11 @@ impl Color {
 
     fn average_channel(left: u32, right: u32) -> u32 {
         left / 2 + right / 2 + (left & right & 1)
+    }
+
+    fn lerp_channel(left: u32, right: u32, (numer, denom): (u32, std::num::NonZeroU32)) -> u32 {
+        let denom: u32 = denom.into();
+        let inv_numer = denom - numer;
+        left / denom * inv_numer + right / denom * numer + (left % denom * inv_numer + right % denom * numer) / denom
     }
 }
