@@ -82,8 +82,9 @@ fn main() {
             GoldBerry.draw(&mut *create_canvas(&mut *image, berries.levels[x].goldens[y]), x * 14 + 5, y * 17 + 35);
         }
     }
+    image = Box::new(scale_image(&*image, 4));
     TransFlagGen::draw_under(&mut *image);
-    std::fs::write("image.bmp", BmpParser::to_bytes(&scale_image(&*image, 4))).unwrap();
+    std::fs::write("image.bmp", BmpParser::to_bytes(&*image)).unwrap();
 }
 
 fn create_canvas(image: &mut dyn Image, active: bool) -> Box<dyn Canvas + '_> {
