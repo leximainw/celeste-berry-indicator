@@ -1,3 +1,4 @@
+mod args;
 mod backgrounds;
 mod berries;
 mod image;
@@ -33,7 +34,12 @@ use image::{
 use savedata::SaveLoader;
 
 fn main() {
-    let berries = SaveLoader::load_save_id(0).unwrap();
+    let args = args::parse_args();
+    let berries = if let Some(file) = args.load_file {
+        SaveLoader::load_save(file)
+    } else {
+        SaveLoader::load_save_id(args.load_id.unwrap_or_default())
+    }.unwrap();
     let mut image: Box<dyn Image> = Box::new(RGBA32Image::new(120, 85));
     let trans = Color::from_srgba32(0);
     for x in 0..120 {
@@ -43,10 +49,9 @@ fn main() {
     }
     let mut canvas = OpaqueCanvas::from_image(&mut *image);
     let mut text = TextField::new();
-    let show_deaths = false;
     text.set_text(format!("{: >3}x", berries.red_berry_count()));
     text.draw(&mut canvas, 11, 9);
-    let (death_text, death_offset) = if !show_deaths {
+    let (death_text, death_offset) = if !args.show_deaths {
         ("".to_string(), 0)
     } else if berries.deaths >= 10000000 {
         ("".to_string(), 20)
@@ -63,7 +68,7 @@ fn main() {
     BerryRow::from_vec(berries.levels[0..3].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 25 + death_offset, 22);
     BerryRow::from_vec(berries.levels[3..5].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 28 + death_offset, 26);
     BerryRow::from_vec(berries.levels[6..8].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 32 + death_offset, 30);
-    if show_deaths {
+    if args.show_deaths {
         if death_offset == 20 {
             for i in 0..3 {
                 Skull.draw(&mut canvas, i * 12 + 6, 20);
