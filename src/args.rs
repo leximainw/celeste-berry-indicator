@@ -35,7 +35,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                 if arg == "--help" {
                     println!("--help  - - - - print this list");
                     println!("--deaths  - - - render death count");
-                    println!("--hearts  - - - render hearts if there are no goldens or if the heart is uncollected");
+                    println!("--hearts  - - - render hearts if golden_count == 0 || !heart");
                     println!("--id={{0..2}} - - select save file by ID");
                     println!("--no-spoilers - hide uncollected items from incomplete levels");
                 } else if arg == "--deaths" {
@@ -67,7 +67,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
             if arg == "/help" {
                 println!("/help  - - - - print this list");
                 println!("/deaths  - - - render death count");
-                println!("/hearts  - - - render hearts if there are no goldens or if the heart is uncollected");
+                println!("/hearts  - - - render hearts if golden_count == 0 || !heart");
                 println!("/id={{0..2}} - - select save file by ID");
                 println!("/no-spoilers - hide uncollected items from incomplete levels");
             } else if arg == "/deaths" {
