@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 pub struct Args {
+    pub hide_incomplete: bool,
     pub load_file: Option<PathBuf>,
     pub load_id: Option<usize>,
     pub show_deaths: bool,
@@ -10,6 +11,7 @@ pub struct Args {
 impl Args {
     pub fn new() -> Args {
         Args{
+            hide_incomplete: false,
             load_file: None,
             load_id: None,
             show_deaths: false,
@@ -38,6 +40,8 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                     if let Ok(id) = str::parse::<usize>(&arg[5..]) {
                         args.load_id = Some(id);
                     }
+                } else if arg == "--no-spoilers" {
+                    args.hide_incomplete = true;
                 }
             }
         } else if args.load_file == None {
@@ -62,6 +66,8 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                 if let Ok(id) = str::parse::<usize>(&arg[4..]) {
                     args.load_id = Some(id);
                 }
+            } else if arg == "/no-spoilers" {
+                args.hide_incomplete = true;
             }
         } else if args.load_file == None {
             args.load_file = Some(arg.into());

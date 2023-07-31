@@ -152,6 +152,18 @@ impl SaveLoader {
                                         None => false,
                                     };
                                 }
+                                match Self::find_attr(&mode.0, "Completed") {
+                                    Some(value) => {
+                                        if value == "true" {
+                                            if area_idx == 8 {
+                                                berries.ch9completed = true;
+                                            } else {
+                                                berries.levels[area_idx].completed[mode_idx] = true;
+                                            }
+                                        }
+                                    },
+                                    None => {},
+                                }
                                 let strawbs = Self::find_tag(&mode.1, "Strawberries");
                                 if let Some(strawbs) = strawbs.0 {
                                     let mut remain = strawbs.1;
