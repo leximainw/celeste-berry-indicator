@@ -1,6 +1,12 @@
+mod backgrounds;
 mod berries;
 mod image;
 mod savedata;
+
+use backgrounds::{
+    Metagenerator,
+    TransFlagGen,
+};
 
 use berries::{
     Canvas,
@@ -18,9 +24,9 @@ use berries::{
 
 use image::{
     BmpParser,
+    Color,
     Image,
     Parser,
-    QoiParser,
     RGBA32Image,
 };
 
@@ -28,8 +34,13 @@ use savedata::SaveLoader;
 
 fn main() {
     let berries = SaveLoader::load_save("/home/leximainw/.local/share/Celeste/Saves/0.celeste").unwrap();
-    let data = b"qoif\0\0\0\x78\0\0\0\x55\x04\0\xfe\x5b\xce\xfa\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\xfe\xf5\xa9\xb8\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\xfe\xff\xff\xff\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\x29\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\x22\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xfd\xf6\0\0\0\0\0\0\0\x01";
-    let mut image = QoiParser::from_bytes(&mut data.iter()).unwrap();
+    let mut image: Box<dyn Image> = Box::new(RGBA32Image::new(120, 85));
+    let trans = Color::from_srgba32(0);
+    for x in 0..120 {
+        for y in 0..85 {
+            image.set_pixel((x, y), trans);
+        }
+    }
     let mut canvas = OpaqueCanvas::from_image(&mut *image);
     let mut text = TextField::new();
     let show_deaths = false;
@@ -71,6 +82,7 @@ fn main() {
             GoldBerry.draw(&mut *create_canvas(&mut *image, berries.levels[x].goldens[y]), x * 14 + 5, y * 17 + 35);
         }
     }
+    TransFlagGen::draw_under(&mut *image);
     std::fs::write("image.bmp", BmpParser::to_bytes(&scale_image(&*image, 4))).unwrap();
 }
 
