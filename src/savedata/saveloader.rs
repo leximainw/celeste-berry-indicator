@@ -129,6 +129,15 @@ impl SaveLoader {
                         },
                         None => 0,
                     };
+                    let area_idx = if (1..8).contains(&area_idx) || (9..11).contains(&area_idx) {
+                        if area_idx < 8 {
+                            area_idx - 1
+                        } else {
+                            area_idx - 2
+                        }
+                    } else {
+                        continue;
+                    };
                     let modes = Self::find_tag(&area.1, "Modes");
                     if let Some(modes) = modes.0 {
                         let mut remain = modes.1;
@@ -137,6 +146,12 @@ impl SaveLoader {
                             let mode = Self::find_tag(&remain, "AreaModeStats");
                             remain = mode.2;
                             if let Some(mode) = mode.0 {
+                                if area_idx != 8 {
+                                    berries.levels[area_idx].hearts[mode_idx] = match Self::find_attr(&mode.0, "HeartGem") {
+                                        Some(value) => value == "true",
+                                        None => false,
+                                    };
+                                }
                                 let strawbs = Self::find_tag(&mode.1, "Strawberries");
                                 if let Some(strawbs) = strawbs.0 {
                                     let mut remain = strawbs.1;
@@ -145,14 +160,13 @@ impl SaveLoader {
                                         remain = strawb.2;
                                         if let Some(strawb) = strawb.0 {
                                             if let Some(key) = Self::find_attr(strawb.0, "Key") {
-                                                if area_idx == 1 && mode_idx == 0 && key == Self::CH1_WINGED {
+                                                if area_idx == 0 && mode_idx == 0 && key == Self::CH1_WINGED {
                                                     berries.ch1winged = true;
-                                                } else if area_idx == 10 && mode_idx == 0 && key == Self::CH9_MOON {
+                                                } else if area_idx == 8 && mode_idx == 0 && key == Self::CH9_MOON {
                                                     berries.ch9moon = true;
-                                                } else if area_idx == 10 && mode_idx == 0 && key == Self::CH9_GOLDEN {
+                                                } else if area_idx == 8 && mode_idx == 0 && key == Self::CH9_GOLDEN {
                                                     berries.ch9golden = true;
-                                                } else if (1..8).contains(&area_idx) || area_idx == 9 {
-                                                    let area_idx = if area_idx == 9 { 7 } else { area_idx - 1 };
+                                                } else if area_idx != 8 {
                                                     if (0..3).contains(&mode_idx) && Self::GOLDEN_IDS[area_idx][mode_idx] == key {
                                                         berries.levels[area_idx].goldens[mode_idx] = true;
                                                     } else if mode_idx == 0 {

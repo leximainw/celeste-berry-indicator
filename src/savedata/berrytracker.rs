@@ -9,44 +9,31 @@ pub struct BerryTracker {
 pub struct BerryTrackerLevel {
     pub berries: Vec<bool>,
     pub goldens: [bool; 3],
+    pub hearts: [bool; 3],
+}
+
+impl BerryTrackerLevel {
+    fn new() -> BerryTrackerLevel {
+        BerryTrackerLevel{
+            berries: Vec::new(),
+            goldens: [false; 3],
+            hearts: [false; 3],
+        }
+    }
 }
 
 impl BerryTracker {
     pub fn new() -> BerryTracker {
         BerryTracker{
             levels: [
-                BerryTrackerLevel{
-                    berries: Vec::new(),
-                    goldens: [false; 3],
-                },
-                BerryTrackerLevel{
-                    berries: Vec::new(),
-                    goldens: [false; 3],
-                },
-                BerryTrackerLevel{
-                    berries: Vec::new(),
-                    goldens: [false; 3],
-                },
-                BerryTrackerLevel{
-                    berries: Vec::new(),
-                    goldens: [false; 3],
-                },
-                BerryTrackerLevel{
-                    berries: Vec::new(),
-                    goldens: [false; 3],
-                },
-                BerryTrackerLevel{
-                    berries: Vec::new(),
-                    goldens: [false; 3],
-                },
-                BerryTrackerLevel{
-                    berries: Vec::new(),
-                    goldens: [false; 3],
-                },
-                BerryTrackerLevel{
-                    berries: Vec::new(),
-                    goldens: [false; 3],
-                },
+                BerryTrackerLevel::new(),
+                BerryTrackerLevel::new(),
+                BerryTrackerLevel::new(),
+                BerryTrackerLevel::new(),
+                BerryTrackerLevel::new(),
+                BerryTrackerLevel::new(),
+                BerryTrackerLevel::new(),
+                BerryTrackerLevel::new(),
             ],
             ch1winged: false,
             ch9moon: false,
