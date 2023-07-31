@@ -100,14 +100,16 @@ fn main() {
         let show_berry = berries.levels.iter().enumerate().map(|(i, x)|
             !show_heart[i] && (!args.hide_incomplete || x.completed[y] || x.goldens[y])
         ).collect::<Vec<bool>>();
-        let mut offset = 4 - (show_heart.iter().fold((0, false), |a, &x| (a.0 + if x && a.1 { 1 } else { 0 }, x)).0 + 1) / 2;
+        let mut offset = if args.space_hearts {
+            4 - (show_heart.iter().fold((0, false), |a, &x| (a.0 + if x && a.1 { 1 } else { 0 }, x)).0 + 1) / 2
+        } else { 4 };
         let mut pushing = false;
         for x in 0..8 {
             let completed = berries.levels[x].completed[y];
             let has_heart = berries.levels[x].hearts[y];
             let has_golden = berries.levels[x].goldens[y];
             if show_heart[x] {
-                if pushing {
+                if pushing && args.space_hearts {
                     offset += 1;
                 } else {
                     pushing = true;

@@ -6,6 +6,7 @@ pub struct Args {
     pub load_id: Option<usize>,
     pub show_deaths: bool,
     pub show_hearts: bool,
+    pub space_hearts: bool,
 }
 
 impl Args {
@@ -16,6 +17,7 @@ impl Args {
             load_id: None,
             show_deaths: false,
             show_hearts: true,
+            space_hearts: false,
         }
     }
 }
@@ -38,6 +40,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                     println!("--hearts  - - - render hearts if golden_count == 0 || !heart");
                     println!("--id={{0..2}} - - select save file by ID");
                     println!("--no-spoilers - hide uncollected items from incomplete levels");
+                    println!("--spacing - - - add space between adjacent hearts");
                 } else if arg == "--deaths" {
                     args.show_deaths = true;
                 } else if arg == "--hearts" {
@@ -48,6 +51,8 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                     }
                 } else if arg == "--no-spoilers" {
                     args.hide_incomplete = true;
+                } else if arg == "--spacing" {
+                    args.space_hearts = true;
                 }
             }
         } else if args.load_file == None {
@@ -70,6 +75,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                 println!("/hearts  - - - render hearts if golden_count == 0 || !heart");
                 println!("/id={{0..2}} - - select save file by ID");
                 println!("/no-spoilers - hide uncollected items from incomplete levels");
+                println!("/spacing - - - add space between adjacent hearts");
             } else if arg == "/deaths" {
                 args.show_deaths = true;
             } else if arg == "/hearts" {
@@ -80,6 +86,8 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                 }
             } else if arg == "/no-spoilers" {
                 args.hide_incomplete = true;
+            } else if arg == "/spacing" {
+                args.space_hearts = true;
             }
         } else if args.load_file == None {
             args.load_file = Some(arg.into());
