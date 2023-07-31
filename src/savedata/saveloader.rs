@@ -1,3 +1,8 @@
+use std::path::{
+    Path,
+    PathBuf,
+};
+
 use super::BerryTracker;
 
 pub struct SaveLoader;
@@ -65,8 +70,37 @@ impl SaveLoader {
     const CH9_MOON: &'static str = "j-19:9";
     const CH9_GOLDEN: &'static str = "a-00:449";
 
-    pub fn load_save(file: &str) -> Result<BerryTracker, Box<dyn std::error::Error>> {
+    pub fn load_save<P>(file: P) -> Result<BerryTracker, Box<dyn std::error::Error>>
+        where P: AsRef<Path> {
         Ok(Self::load_data(std::fs::read_to_string(file)?))
+    }
+
+    #[cfg(target_os = "linux")]
+    pub fn load_save_id(id: usize) -> Result<BerryTracker, Box<dyn std::error::Error>> {
+        if id >= 3 {
+            Err("id must be in the range 0..3".into())
+        } else if let Some(data_dir) = dirs::data_dir() {
+            let buf = PathBuf::from(data_dir)
+                .join(format!("Celeste/Saves/{id}.celeste"));
+            Self::load_save(buf)
+        } else {
+            Err("unable to find data directory".into())
+        }
+    }
+
+    #[cfg(target_os = "windows")]
+    pub fn load_save_id(id: usize) -> Result<BerryTracker, Box<dyn std::error::Error>> {
+        if id >= 3 {
+            return Err("id must be in the range 0..3".into())
+        } else {
+            if let Ok(data) = std::fs::read_to_string(
+                format!("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Celeste\\Saves\\{id}.celeste")
+            ) {
+                Ok(Self::load_data(data))
+            } else {
+                Err("unable to find Celeste install location".into())
+            }
+        }
     }
 
     pub fn load_data(xml: String) -> BerryTracker {

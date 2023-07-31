@@ -33,7 +33,7 @@ use image::{
 use savedata::SaveLoader;
 
 fn main() {
-    let berries = SaveLoader::load_save("/home/leximainw/.local/share/Celeste/Saves/0.celeste").unwrap();
+    let berries = SaveLoader::load_save_id(0).unwrap();
     let mut image: Box<dyn Image> = Box::new(RGBA32Image::new(120, 85));
     let trans = Color::from_srgba32(0);
     for x in 0..120 {
