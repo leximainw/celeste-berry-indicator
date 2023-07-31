@@ -20,6 +20,9 @@ use berries::{
     GoldBerry,
     WingedGoldBerry,
     MoonBerry,
+    HeartA,
+    HeartB,
+    HeartC,
     Skull,
 };
 
@@ -82,9 +85,21 @@ fn main() {
     WingedGoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch1winged), 42, 5);
     MoonBerry.draw(&mut *create_canvas(&mut *image, berries.ch9moon), 78, 6);
     GoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch9golden), 96, 4);
+    let has_any_goldens = berries.levels.iter().any(|x| x.goldens.iter().any(|x| *x));
     for x in 0..8 {
         for y in 0..3 {
-            GoldBerry.draw(&mut *create_canvas(&mut *image, berries.levels[x].goldens[y]), x * 14 + 5, y * 17 + 35);
+            let has_golden = berries.levels[x].goldens[y];
+            let has_heart = berries.levels[x].hearts[y];
+            if args.show_hearts && (!has_heart || !has_any_goldens) && !has_golden {
+                match y {
+                    0 => HeartA.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + 4, y * 17 + 35),
+                    1 => HeartB.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + 4, y * 17 + 35),
+                    2 => HeartC.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + 4, y * 17 + 35),
+                    _ => panic!("y was {y}, but should be 0..3"),
+                }
+            } else {
+                GoldBerry.draw(&mut *create_canvas(&mut *image, berries.levels[x].goldens[y]), x * 14 + 5, y * 17 + 35);
+            }
         }
     }
     image = Box::new(scale_image(&*image, 4));
