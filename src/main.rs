@@ -92,22 +92,39 @@ fn main() {
         GoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch9golden), 96, 4);
     }
     let has_any_goldens = berries.levels.iter().any(|x| x.goldens.iter().any(|x| *x));
-    for x in 0..8 {
-        for y in 0..3 {
+    for y in 0..3 {
+        let show_heart = berries.levels.iter().map(|x|
+            args.show_hearts && !x.goldens[y] && (!x.hearts[y] || !has_any_goldens)
+                && (!args.hide_incomplete || x.completed[y] || x.hearts[y])
+        ).collect::<Vec<bool>>();
+        let show_berry = berries.levels.iter().enumerate().map(|(i, x)|
+            !show_heart[i] && (!args.hide_incomplete || x.completed[y] || x.goldens[y])
+        ).collect::<Vec<bool>>();
+        let mut offset = 4 - (show_heart.iter().fold((0, false), |a, &x| (a.0 + if x && a.1 { 1 } else { 0 }, x)).0 + 1) / 2;
+        let mut pushing = false;
+        for x in 0..8 {
             let completed = berries.levels[x].completed[y];
             let has_heart = berries.levels[x].hearts[y];
             let has_golden = berries.levels[x].goldens[y];
-            if args.show_hearts && (!has_heart || !has_any_goldens) && !has_golden {
-                if !args.hide_incomplete || completed || has_heart {
-                    match y {
-                        0 => HeartA.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + 4, y * 17 + 35),
-                        1 => HeartB.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + 4, y * 17 + 35),
-                        2 => HeartC.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + 4, y * 17 + 35),
-                        _ => panic!("y was {y}, but should be 0..3"),
-                    }
+            if show_heart[x] {
+                if pushing {
+                    offset += 1;
+                } else {
+                    pushing = true;
                 }
-            } else if !args.hide_incomplete || completed || has_golden {
-                GoldBerry.draw(&mut *create_canvas(&mut *image, berries.levels[x].goldens[y]), x * 14 + 5, y * 17 + 35);
+                match y {
+                    0 => HeartA.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + offset, y * 17 + 35),
+                    1 => HeartB.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + offset, y * 17 + 35),
+                    2 => HeartC.draw(&mut *create_canvas(&mut *image, has_heart), x * 14 + offset, y * 17 + 35),
+                    _ => panic!("y was {y}, but should be 0..3"),
+                }
+            } else {
+                if pushing {
+                    pushing = false;
+                }
+                if show_berry[x] {
+                    GoldBerry.draw(&mut *create_canvas(&mut *image, berries.levels[x].goldens[y]), x * 14 + 1 + offset, y * 17 + 35);
+                }
             }
         }
     }
