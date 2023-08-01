@@ -106,7 +106,7 @@ impl SaveLoader {
     pub fn load_data(xml: String) -> BerryTracker {
         let mut berries = BerryTracker::new();
         for (idx, berry_ids) in Self::BERRY_IDS.iter().enumerate() {
-            berries.levels[idx].berries.extend(berry_ids.iter().map(|x| false))
+            berries.levels[idx].berries.extend(berry_ids.iter().map(|_| false))
         }
         let total_deaths = Self::find_tag(&xml, "TotalDeaths");
         if let Some(deaths) = total_deaths.0 {
