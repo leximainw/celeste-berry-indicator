@@ -37,18 +37,18 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                 if arg == "--help" {
                     println!("--help  - - - - print this list");
                     println!("--deaths  - - - render death count");
-                    println!("--hearts  - - - render hearts if golden_count == 0 || !heart");
                     println!("--id={{0..2}} - - select save file by ID");
+                    println!("--no-hearts - - don't render hearts");
                     println!("--no-spoilers - hide uncollected items from incomplete levels");
                     println!("--spacing - - - add space between adjacent hearts");
                 } else if arg == "--deaths" {
                     args.show_deaths = true;
-                } else if arg == "--hearts" {
-                    args.show_hearts = true;
                 } else if arg.starts_with("--id=") {
                     if let Ok(id) = str::parse::<usize>(&arg[5..]) {
                         args.load_id = Some(id);
                     }
+                } else if arg == "--no-hearts" {
+                    args.show_hearts = false;
                 } else if arg == "--no-spoilers" {
                     args.hide_incomplete = true;
                 } else if arg == "--spacing" {
@@ -72,18 +72,18 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
             if arg == "/help" {
                 println!("/help  - - - - print this list");
                 println!("/deaths  - - - render death count");
-                println!("/hearts  - - - render hearts if golden_count == 0 || !heart");
                 println!("/id={{0..2}} - - select save file by ID");
+                println!("/no-hearts - - render hearts if golden_count == 0 || !heart");
                 println!("/no-spoilers - hide uncollected items from incomplete levels");
                 println!("/spacing - - - add space between adjacent hearts");
             } else if arg == "/deaths" {
                 args.show_deaths = true;
-            } else if arg == "/hearts" {
-                args.show_hearts = true;
             } else if arg.starts_with("/id=") {
                 if let Ok(id) = str::parse::<usize>(&arg[4..]) {
                     args.load_id = Some(id);
                 }
+            } else if arg == "/no-hearts" {
+                args.show_hearts = false;
             } else if arg == "/no-spoilers" {
                 args.hide_incomplete = true;
             } else if arg == "/spacing" {
