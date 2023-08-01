@@ -93,13 +93,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Skull.draw(&mut canvas, 10 + death_offset, 20);
         }
     }
-    if !args.hide_incomplete || berries.levels[0].completed[0] || berries.ch1winged {
+    if !args.hide_incomplete || berries.ch1winged {
         WingedGoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch1winged), 42, 5);
     }
-    if !args.hide_incomplete || berries.ch9completed || berries.ch9moon {
+    if !args.hide_incomplete || berries.ch9moon {
         MoonBerry.draw(&mut *create_canvas(&mut *image, berries.ch9moon), 78, 6);
     }
-    if !args.hide_incomplete || berries.ch9completed || berries.ch9golden {
+    if !args.hide_incomplete || (berries.ch9completed && has_any_goldens) || berries.ch9golden {
         GoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch9golden), 96, 4);
     }
     let has_any_goldens = berries.levels.iter().any(|x| x.goldens.iter().any(|x| *x));
