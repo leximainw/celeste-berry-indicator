@@ -68,6 +68,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         (text, len * 2 + 9)
     };
     let show_until = berries.levels.iter().position(|x| x.completed[0] == false).unwrap_or_else(|| 9);
+    let has_any_goldens = berries.levels.iter().any(|x| x.goldens.iter().any(|x| *x));
     Berry.draw(&mut canvas, 29, 6);
     BerryRow::from_vec(berries.levels[0..usize::min(3, show_until)].iter()
         .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
@@ -102,7 +103,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if !args.hide_incomplete || (berries.ch9completed && has_any_goldens) || berries.ch9golden {
         GoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch9golden), 96, 4);
     }
-    let has_any_goldens = berries.levels.iter().any(|x| x.goldens.iter().any(|x| *x));
     for y in 0..3 {
         let show_heart = berries.levels.iter().map(|x|
             args.show_hearts && !x.goldens[y] && (!x.hearts[y] || !has_any_goldens)
