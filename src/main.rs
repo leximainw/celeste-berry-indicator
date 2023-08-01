@@ -105,10 +105,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         } else { 4 };
         let mut pushing = false;
         for x in 0..8 {
-            let completed = berries.levels[x].completed[y];
-            let has_heart = berries.levels[x].hearts[y];
-            let has_golden = berries.levels[x].goldens[y];
             if show_heart[x] {
+                let has_heart = berries.levels[x].hearts[y];
                 if pushing && args.space_hearts {
                     offset += 1;
                 } else {
