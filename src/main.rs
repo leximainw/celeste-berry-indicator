@@ -34,15 +34,26 @@ use image::{
     RGBA32Image,
 };
 
-use savedata::SaveLoader;
+use savedata::{
+    BerryTracker,
+    SaveLoader,
+};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = args::parse_args();
-    let berries = if let Some(file) = args.load_file {
+    let berries = if let Some(file) = &args.load_file {
         SaveLoader::load_save(file)
     } else {
         SaveLoader::load_save_id(args.load_id.unwrap_or_default())
     }?;
+    let mut image = render_berries(berries, args);
+    image = Box::new(scale_image(&*image, 4));
+    TransFlagGen::draw_under(&mut *image);
+    std::fs::write("image.bmp", BmpParser::to_bytes(&*image))?;
+    Ok(())
+}
+
+fn render_berries(berries: BerryTracker, args: args::Args) -> Box<dyn Image> {
     let mut image: Box<dyn Image> = Box::new(RGBA32Image::new(120, 85));
     let trans = Color::from_srgba32(0);
     for x in 0..120 {
@@ -139,10 +150,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-    image = Box::new(scale_image(&*image, 4));
-    TransFlagGen::draw_under(&mut *image);
-    std::fs::write("image.bmp", BmpParser::to_bytes(&*image))?;
-    Ok(())
+    image
 }
 
 fn create_canvas(image: &mut dyn Image, active: bool) -> Box<dyn Canvas + '_> {
