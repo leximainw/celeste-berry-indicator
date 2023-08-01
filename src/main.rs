@@ -67,10 +67,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let len = text.len();
         (text, len * 2 + 9)
     };
+    let show_until = berries.levels.iter().position(|x| x.completed[0] == false).unwrap_or_else(|| 9);
     Berry.draw(&mut canvas, 29, 6);
-    BerryRow::from_vec(berries.levels[0..3].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 25 + death_offset, 22);
-    BerryRow::from_vec(berries.levels[3..5].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 28 + death_offset, 26);
-    BerryRow::from_vec(berries.levels[6..8].iter().map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>()).draw(&mut canvas, 32 + death_offset, 30);
+    BerryRow::from_vec(berries.levels[0..usize::min(3, show_until)].iter()
+        .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
+        .draw(&mut canvas, 25 + death_offset, 22);
+    if show_until > 3 {
+        BerryRow::from_vec(berries.levels[3..usize::min(5, show_until)].iter()
+            .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
+            .draw(&mut canvas, 28 + death_offset, 26);
+    }
+    if show_until > 6 {
+        BerryRow::from_vec(berries.levels[6..usize::min(8, show_until)].iter()
+            .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
+            .draw(&mut canvas, 32 + death_offset, 30);
+    }
     if args.show_deaths {
         if death_offset == 20 {
             for i in 0..3 {
