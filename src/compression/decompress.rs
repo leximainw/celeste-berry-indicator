@@ -12,7 +12,9 @@ pub struct Decompress<R: Read> {
     curr_block: DecompressState,
 }
 
+#[derive(Default)]
 enum DecompressState {
+    #[default]
     None,
     LiteralBlock(Vec<u8>, usize),
 }
@@ -70,7 +72,8 @@ impl<R: Read> Read for Decompress<R> {
         }
 
         while ptr < buffer.len() {
-            match self.curr_block {
+            let state = std::mem::take(&mut self.curr_block);
+            match state {
                 DecompressState::None => {
                     read_bit!(true, {   // literal block
                         read_bit!(false, {   // multiple bytes
@@ -118,7 +121,16 @@ impl<R: Read> Read for Decompress<R> {
                         todo!();
                     });
                 },
-                _ => todo!(),
+                DecompressState::LiteralBlock(vec, mut vec_ptr) => {
+                    while ptr < buffer.len() && vec_ptr < vec.len() {
+                        buffer[ptr] = vec[vec_ptr];
+                        vec_ptr += 1;
+                        ptr += 1;
+                    }
+                    if vec_ptr < vec.len() {
+                        self.curr_block = DecompressState::LiteralBlock(vec, vec_ptr);
+                    }
+                },
             }
         }
         Ok(ptr)
