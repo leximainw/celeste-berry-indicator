@@ -1,6 +1,7 @@
 mod args;
 mod backgrounds;
 mod berries;
+mod compression;
 mod image;
 mod savedata;
 
