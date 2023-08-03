@@ -83,4 +83,17 @@ impl<R: Read> BitReader<R> {
         self.bits -= 8;
         Ok(Some(value))
     }
+
+    pub fn read_u16(&mut self) -> Result<Option<u16>> {
+        if self.bits < 16 {
+            self.fill(2)?;
+            if self.bits < 16 {
+                return Ok(None);
+            }
+        }
+        let value = (self.buffer >> 48) as u16;
+        self.buffer <<= 16;
+        self.bits -= 16;
+        Ok(Some(value))
+    }
 }

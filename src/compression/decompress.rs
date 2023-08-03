@@ -57,6 +57,18 @@ impl<R: Read> Read for Decompress<R> {
             }
         }
 
+        macro_rules! read_u16 {
+            ($terminal:literal, $var:ident, $block:stmt) => {
+                if let Some($var) = self.base.read_u16()? {
+                    $block
+                } else if $terminal {
+                    return Ok(ptr);
+                } else {
+                    return Err(Error::new(ErrorKind::UnexpectedEof, "unexpected end of file"));
+                }
+            }
+        }
+
         while ptr < buffer.len() {
             match self.curr_block {
                 DecompressState::None => {
@@ -65,7 +77,9 @@ impl<R: Read> Read for Decompress<R> {
                             let mut vec_size = 0;
                             read_bit!(false, {   // variable length
                                 read_bit!(false, {   // u16 + 259
-                                    todo!();
+                                    read_u16!(false, value, {
+                                        vec_size = Into::<usize>::into(value) + 259;
+                                    });
                                 }, {   // u8 + 2
                                     read_u8!(false, value, {
                                         vec_size = Into::<usize>::into(value) + 2;
