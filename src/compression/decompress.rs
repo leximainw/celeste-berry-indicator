@@ -74,7 +74,7 @@ impl<R: Read> Read for Decompress<R> {
                 DecompressState::None => {
                     read_bit!(true, {   // literal block
                         read_bit!(false, {   // multiple bytes
-                            let mut vec_size = 0;
+                            let mut vec_size;
                             read_bit!(false, {   // variable length
                                 read_bit!(false, {   // u16 + 259
                                     read_u16!(false, value, {
