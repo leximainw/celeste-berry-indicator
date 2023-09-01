@@ -133,13 +133,14 @@ fn render_berries(berries: BerryTracker, args: args::Args) -> Box<dyn Image> {
     if !args.hide_incomplete || (berries.ch9completed && has_any_goldens) || berries.ch9golden {
         GoldBerry.draw(&mut *create_canvas(&mut *image, berries.ch9golden), 96, 4);
     }
+    let completed_8b = berries.levels[7].completed[1];
     for y in 0..3 {
         let show_heart = berries.levels.iter().map(|x|
             args.show_hearts && !x.goldens[y] && (!x.hearts[y] || !has_any_goldens)
                 && (!args.hide_incomplete || x.completed[y] || x.hearts[y])
         ).collect::<Vec<bool>>();
         let show_berry = berries.levels.iter().enumerate().map(|(i, x)|
-            !show_heart[i] && (!args.hide_incomplete || x.completed[y] || x.goldens[y])
+            !show_heart[i] && (!args.hide_incomplete || (completed_8b && x.completed[y]) || x.goldens[y])
         ).collect::<Vec<bool>>();
         let mut offset = if args.space_hearts {
             4 - (show_heart.iter().fold((0, false), |a, &x| (a.0 + if x && a.1 { 1 } else { 0 }, x)).0 + 1) / 2
