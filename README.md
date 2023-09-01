@@ -5,6 +5,10 @@ Basic usage is: `celeste-berry-indicator savefile.celeste output_image.bmp`
 
 To avoid potential spoilers, use the `--no-spoilers` flag (or `/no-spoilers` on Windows).
 
+## Windows GUI
+
+To use the Windows GUI tool, download both `BerryIndicatorWindowsGUI.exe` and `celeste-berry-indicator-win64.exe` and place them in the same folder. You can then launch `BerryIndicatorWindowsGUI.exe` normally.
+
 ### __WARNING__: potential spoilers below
 
 ## Advanced usage
