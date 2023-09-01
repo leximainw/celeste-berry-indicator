@@ -1,5 +1,7 @@
 /image.bmp
 /image.qoi
+/BerryIndicator/BerryIndicator/bin
+/BerryIndicator/BerryIndicator/obj
 /target
 /util-gamma-table/target
 /util-gamma-table/values.txt
