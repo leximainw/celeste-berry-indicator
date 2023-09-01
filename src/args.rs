@@ -26,12 +26,12 @@ impl Args {
     }
 }
 
-pub fn parse_args() -> Args {
+pub fn parse_args() -> Option<Args> {
     parse_args_core(&mut std::env::args().skip(1))
 }
 
 #[cfg(not(target_os = "windows"))]
-fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
+fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Option<Args> {
     let mut args = Args::new();
     for arg in iter {
         let mut chars = arg.chars();
@@ -88,7 +88,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
 }
 
 #[cfg(target_os = "windows")]
-fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
+fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Option<Args> {
     let mut args = Args::new();
     for arg in iter {
         let mut chars = arg.chars();
