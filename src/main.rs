@@ -50,7 +50,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut image = render_berries(berries, args);
     image = Box::new(scale_image(&*image, 4));
     TransFlagGen::draw_under(&mut *image);
-    std::fs::write("image.bmp", BmpParser::to_bytes(&*image))?;
+    std::fs::write(output, BmpParser.to_bytes(&*image))?;
     Ok(())
 }
 

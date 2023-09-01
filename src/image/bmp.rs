@@ -6,11 +6,11 @@ use super::{
 pub struct BmpParser;
 
 impl Parser for BmpParser {
-    fn from_bytes(iter: &mut dyn Iterator<Item=&u8>) -> Result<Box<dyn Image>, Box<dyn std::error::Error>> {
+    fn from_bytes(&self, iter: &mut dyn Iterator<Item=&u8>) -> Result<Box<dyn Image>, Box<dyn std::error::Error>> {
         Err("reading .bmp files is not yet implemented".into())
     }
 
-    fn to_bytes(image: &dyn Image) -> Vec<u8> {
+    fn to_bytes(&self, image: &dyn Image) -> Vec<u8> {
         let mut vec = Vec::new();
         vec.extend_from_slice(b"BM");
         vec.extend_from_slice(&[0; 8]);
