@@ -153,7 +153,7 @@ impl Parser for QoiParser {
             }
             match pixel.to_be_bytes() {
                 [r, g, b, a] => {
-                    let index = ((r * 3 + g * 5 + b * 7 + a * 11) % 64) as usize;
+                    let index = (r as usize * 3 + g as usize * 5 + b as usize * 7 + a as usize * 11) % 64;
                     if table[index] == pixel {   // index
                         vec.push(index as u8);
                         continue;
