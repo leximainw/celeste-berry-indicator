@@ -98,7 +98,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                 println!("/help  - - - - - print this list");
                 println!("/deaths  - - - - render death count");
                 println!("/id={{0..2}} - - - select save file by ID");
-                println!("/no-hearts - - - render hearts if golden_count == 0 || !heart");
+                println!("/no-hearts - - - don't render hearts");
                 println!("/no-spoilers - - hide uncollected items from incomplete levels");
                 println!("/output={{file}} - write to specified file");
                 println!("/spacing - - - - add space between adjacent hearts");
