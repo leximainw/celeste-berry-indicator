@@ -28,17 +28,20 @@ use berries::{
 };
 
 use image::{
-    BmpParser,
     Color,
     Image,
-    Parser,
     RGBA32Image,
+    Parser,
+    BmpParser,
+    QoiParser,
 };
 
 use savedata::{
     BerryTracker,
     SaveLoader,
 };
+
+const DEFAULT_OUTPUT: &str = "image.bmp";
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = args::parse_args();
@@ -47,10 +50,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         SaveLoader::load_save_id(args.load_id.unwrap_or_default())
     }?;
+    let output = args.output_file.clone().unwrap_or_else(|| DEFAULT_OUTPUT.into());
+    let extension = output.extension()
+        .map(|x| x.to_str()).flatten()
+        .map(|x| x.to_lowercase());
+    let parser: Box<dyn Parser> = if let Some(extension) = extension {
+        let extension = extension.as_str();
+        match extension {
+            "bmp" => Box::new(BmpParser),
+            "qoi" => Box::new(QoiParser),
+            _ => todo!(),
+        }
+    } else {
+        todo!();
+    };
     let mut image = render_berries(berries, args);
     image = Box::new(scale_image(&*image, 4));
     TransFlagGen::draw_under(&mut *image);
-    std::fs::write(output, BmpParser.to_bytes(&*image))?;
+    std::fs::write(output, parser.to_bytes(&*image))?;
     Ok(())
 }
 
