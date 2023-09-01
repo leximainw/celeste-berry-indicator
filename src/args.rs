@@ -46,6 +46,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                     println!("--no-spoilers - - hide uncollected items from incomplete levels");
                     println!("--output={{file}} - write to specified file");
                     println!("--spacing - - - - add space between adjacent hearts");
+                    return None;
                 } else if arg == "--deaths" {
                     args.show_deaths = true;
                 } else if arg.starts_with("--id=") {
@@ -83,7 +84,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
             }
         }
     }
-    args
+    Some(args)
 }
 
 #[cfg(target_os = "windows")]
@@ -101,6 +102,7 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
                 println!("/no-spoilers - - hide uncollected items from incomplete levels");
                 println!("/output={{file}} - write to specified file");
                 println!("/spacing - - - - add space between adjacent hearts");
+                return None;
             } else if arg == "/deaths" {
                 args.show_deaths = true;
             } else if arg.starts_with("/id=") {
@@ -137,5 +139,5 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Args {
             }
         }
     }
-    args
+    Some(args)
 }
