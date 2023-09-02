@@ -40,14 +40,28 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Option<Args> {
         if chars.next() == Some('-') {
             if chars.next() == Some('-') {
                 let arg = arg.to_lowercase();
-                if arg == "--help" {
+                if arg.starts_with("--bg=") {
+                    args.background = arg[5..].to_string();
+                } else if arg == "--help" {
+                    println!("--bg={{bg}} - - - - render the image with a specified background");
                     println!("--help  - - - - - print this list");
+                    println!("--help:bg - - - - print a list of available backgrounds");
                     println!("--deaths  - - - - render death count");
                     println!("--id={{0..2}} - - - select save file by ID");
                     println!("--no-hearts - - - don't render hearts");
                     println!("--no-spoilers - - hide uncollected items from incomplete levels");
                     println!("--output={{file}} - write to specified file");
                     println!("--spacing - - - - add space between adjacent hearts");
+                    return None;
+                } else if arg.starts_with("--help:") {
+                    let category = &arg[7..];
+                    match category {
+                        "bg" => {
+                            println!("--bg=trans - transgender flag (default)");
+                            println!("--bg=enby  - nonbinary flag");
+                        },
+                        _ => println!("unknown category {category}"),
+                    }
                     return None;
                 } else if arg == "--deaths" {
                     args.show_deaths = true;
@@ -96,14 +110,28 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Option<Args> {
         let mut chars = arg.chars();
         if chars.next() == Some('/') {
             let arg = arg.to_lowercase();
-            if arg == "/help" {
+            if arg.starts_with("/bg=") {
+                args.background = arg[4..].to_string();
+            } if arg == "/help" {
+                println!("/bg={{bg}} - - - - render the image with a specified background");
                 println!("/help  - - - - - print this list");
+                println!("/help:bg - - - - print a list of available backgrounds");
                 println!("/deaths  - - - - render death count");
                 println!("/id={{0..2}} - - - select save file by ID");
                 println!("/no-hearts - - - don't render hearts");
                 println!("/no-spoilers - - hide uncollected items from incomplete levels");
                 println!("/output={{file}} - write to specified file");
                 println!("/spacing - - - - add space between adjacent hearts");
+                return None;
+            } else if arg.starts_with("/help:") {
+                let category = &arg[6..];
+                match category {
+                    "bg" => {
+                        println!("/bg=trans - transgender flag (default)");
+                        println!("/bg=enby  - nonbinary flag");
+                    },
+                    _ => println!("unknown category {category}"),
+                };
                 return None;
             } else if arg == "/deaths" {
                 args.show_deaths = true;

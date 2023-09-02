@@ -66,8 +66,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             todo!();
         };
         let flag: Box<dyn Metagenerator> = match (&args.background).as_str() {
-            "enby" => Box::new(EnbyFlagGen),
-            "trans" => Box::new(TransFlagGen),
+            "transgender" | "transsexual" | "trans" => Box::new(TransFlagGen),
+            "nonbinary" | "enby" | "nb" => Box::new(EnbyFlagGen),
             _ => todo!(),
         };
         let mut image = render_berries(berries, args);
