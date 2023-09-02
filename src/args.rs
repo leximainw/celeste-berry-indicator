@@ -3,6 +3,7 @@ use std::path::PathBuf;
 const DEFAULT_EXTENSION: &str = "bmp";
 
 pub struct Args {
+    pub background: String,
     pub hide_incomplete: bool,
     pub load_file: Option<PathBuf>,
     pub load_id: Option<usize>,
@@ -15,6 +16,7 @@ pub struct Args {
 impl Args {
     pub fn new() -> Args {
         Args{
+            background: "trans".to_string(),
             hide_incomplete: false,
             load_file: None,
             load_id: None,

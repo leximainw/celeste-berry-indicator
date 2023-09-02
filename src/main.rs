@@ -7,6 +7,7 @@ mod savedata;
 
 use backgrounds::{
     Metagenerator,
+    EnbyFlagGen,
     TransFlagGen,
 };
 
@@ -64,9 +65,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         } else {
             todo!();
         };
+        let flag: Box<dyn Metagenerator> = match (&args.background).as_str() {
+            "enby" => Box::new(EnbyFlagGen),
+            "trans" => Box::new(TransFlagGen),
+            _ => todo!(),
+        };
         let mut image = render_berries(berries, args);
         image = Box::new(scale_image(&*image, 4));
-        TransFlagGen.draw_under(&mut *image);
+        flag.draw_under(&mut *image);
         std::fs::write(output, parser.to_bytes(&*image))?;
     }
     Ok(())
