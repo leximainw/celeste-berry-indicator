@@ -24,7 +24,7 @@ pub struct Flag {
 impl Generator for Flag {
     fn get_pixel(&self, pixel: (usize, usize)) -> Color {
         const STRIPES: &'static [(u32, usize)] = &[
-            (0x5bcefaff, 1), (0xf5a9b8ff, 1), (0xffffffff, 1), (0xf5a9b8ff, 1), (0x5bcefaff, 1)
+            (0x5bcefaff, 1), (0xf5a9b8ff, 1), (0xffffffff, 1), (0xf5a9b8ff, 1), (0x5bcefaff, 1),
         ];
         FlagStripes::stripes(STRIPES, pixel.1, self.height)
     }
