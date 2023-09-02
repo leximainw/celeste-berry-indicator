@@ -71,10 +71,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             match extension {
                 "bmp" => Box::new(BmpParser),
                 "qoi" => Box::new(QoiParser),
-                _ => todo!(),
+                _ => return Err(format!("unsupported file extension .{extension}").into()),
             }
         } else {
-            todo!();
+            return Err("expected file extension for output".into());
         };
         let flag: Box<dyn Metagenerator> = match (&args.background).as_str() {
             "transgender" | "transsexual" | "trans" => Box::new(TransFlagGen),
@@ -88,7 +88,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "nonbinary" | "enby" | "nb" => Box::new(EnbyFlagGen),
             "queer" => Box::new(QueerFlagGen),
             "rainbow" | "lgbt" | "lgbt+" | "lgbtq" | "lgbtq+" | "lgbtqia" | "lgbtqia+" => { berry_row_color = BLUE; Box::new(RainbowFlagGen) },
-            _ => todo!(),
+            _ => return Err(format!("unknown background {}", args.background).into()),
         };
         let mut image = render_berries(berries, berry_row_color, args);
         image = Box::new(scale_image(&*image, 4));
