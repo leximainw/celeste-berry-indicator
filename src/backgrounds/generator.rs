@@ -2,16 +2,16 @@ use crate::Image;
 use super::Color;
 
 pub trait Metagenerator {
-    fn get_generator(size: (usize, usize)) -> Box<dyn Generator>;
+    fn get_generator(&self, size: (usize, usize)) -> Box<dyn Generator>;
 
-    fn get_pixel(point: (usize, usize), size: (usize, usize)) -> Color {
-        Self::get_generator(size).get_pixel(point)
+    fn get_pixel(&self, point: (usize, usize), size: (usize, usize)) -> Color {
+        self.get_generator(size).get_pixel(point)
     }
 
     fn draw_under(&self, image: &mut dyn Image) {
         let width = image.get_width();
         let height = image.get_height();
-        let generator = Self::get_generator((width, height));
+        let generator = self.get_generator((width, height));
         for y in 0..height {
             for x in 0..width {
                 let point = (x, y);

@@ -8,7 +8,7 @@ use super::{
 pub struct FlagGenerator;
 
 impl Metagenerator for FlagGenerator {
-    fn get_generator(size: (usize, usize)) -> Box<dyn Generator> {
+    fn get_generator(&self, size: (usize, usize)) -> Box<dyn Generator> {
         Box::new(Flag{
             width: size.0,
             height: size.1,
