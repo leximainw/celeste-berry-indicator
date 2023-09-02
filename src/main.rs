@@ -54,6 +54,8 @@ use savedata::{
 const DEFAULT_OUTPUT: &str = "image.bmp";
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut berry_row_color: u32 = 0xde2a2aff;
+    const BLUE: u32 = 0x2f5ffaff;
     if let Some(args) = args::parse_args() {
         let berries = if let Some(file) = &args.load_file {
             SaveLoader::load_save(file)
@@ -79,16 +81,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "aroace" => Box::new(AroaceFlagGen),
             "aromantic" | "aro" => Box::new(AromanticFlagGen),
             "asexual" | "ace" => Box::new(AsexualFlagGen),
-            "bisexual" | "bi" => Box::new(BisexualFlagGen),
+            "bisexual" | "bi" => { berry_row_color = BLUE; Box::new(BisexualFlagGen) },
             "gay" | "mlm" => Box::new(GayFlagGen),
-            "lesbian" | "wlw" | "les" | "lez" => Box::new(LesbianFlagGen),
-            "lesbian5" | "wlw5" | "les5" | "lez5" => Box::new(Lesbian5FlagGen),
+            "lesbian" | "wlw" | "les" | "lez" => { berry_row_color = BLUE; Box::new(LesbianFlagGen) },
+            "lesbian5" | "wlw5" | "les5" | "lez5" => { berry_row_color = BLUE; Box::new(Lesbian5FlagGen) },
             "nonbinary" | "enby" | "nb" => Box::new(EnbyFlagGen),
             "queer" => Box::new(QueerFlagGen),
-            "rainbow" | "lgbt" | "lgbt+" | "lgbtq" | "lgbtq+" | "lgbtqia" | "lgbtqia+" => Box::new(RainbowFlagGen),
+            "rainbow" | "lgbt" | "lgbt+" | "lgbtq" | "lgbtq+" | "lgbtqia" | "lgbtqia+" => { berry_row_color = BLUE; Box::new(RainbowFlagGen) },
             _ => todo!(),
         };
-        let mut image = render_berries(berries, args);
+        let mut image = render_berries(berries, berry_row_color, args);
         image = Box::new(scale_image(&*image, 4));
         flag.draw_under(&mut *image);
         std::fs::write(output, parser.to_bytes(&*image))?;
@@ -96,7 +98,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn render_berries(berries: BerryTracker, args: args::Args) -> Box<dyn Image> {
+fn render_berries(berries: BerryTracker, berry_row_color: u32, args: args::Args) -> Box<dyn Image> {
     let mut image: Box<dyn Image> = Box::new(RGBA32Image::new(120, 85));
     let trans = Color::from_srgba32(0);
     for x in 0..120 {
@@ -124,16 +126,16 @@ fn render_berries(berries: BerryTracker, args: args::Args) -> Box<dyn Image> {
     let show_until = berries.levels.iter().position(|x| x.completed[0] == false).unwrap_or_else(|| 9);
     let has_any_goldens = berries.levels.iter().any(|x| x.goldens.iter().any(|x| *x));
     Berry.draw(&mut canvas, 29, 6);
-    BerryRow::from_vec(berries.levels[0..usize::min(3, show_until)].iter()
+    BerryRow::from_vec(berry_row_color, berries.levels[0..usize::min(3, show_until)].iter()
         .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
         .draw(&mut canvas, 25 + death_offset, 22);
     if show_until > 3 {
-        BerryRow::from_vec(berries.levels[3..usize::min(5, show_until)].iter()
+        BerryRow::from_vec(berry_row_color, berries.levels[3..usize::min(5, show_until)].iter()
             .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
             .draw(&mut canvas, 28 + death_offset, 26);
     }
     if show_until > 6 {
-        BerryRow::from_vec(berries.levels[6..usize::min(8, show_until)].iter()
+        BerryRow::from_vec(berry_row_color, berries.levels[6..usize::min(8, show_until)].iter()
             .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
             .draw(&mut canvas, 32 + death_offset, 30);
     }
