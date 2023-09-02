@@ -7,7 +7,16 @@ mod savedata;
 
 use backgrounds::{
     Metagenerator,
+    AroaceFlagGen,
+    AromanticFlagGen,
+    AsexualFlagGen,
+    BisexualFlagGen,
     EnbyFlagGen,
+    GayFlagGen,
+    LesbianFlagGen,
+    Lesbian5FlagGen,
+    QueerFlagGen,
+    RainbowFlagGen,
     TransFlagGen,
 };
 
@@ -67,7 +76,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
         let flag: Box<dyn Metagenerator> = match (&args.background).as_str() {
             "transgender" | "transsexual" | "trans" => Box::new(TransFlagGen),
+            "aroace" => Box::new(AroaceFlagGen),
+            "aromantic" | "aro" => Box::new(AromanticFlagGen),
+            "asexual" | "ace" => Box::new(AsexualFlagGen),
+            "bisexual" | "bi" => Box::new(BisexualFlagGen),
+            "gay" | "mlm" => Box::new(GayFlagGen),
+            "lesbian" | "wlw" | "les" | "lez" => Box::new(LesbianFlagGen),
+            "lesbian5" | "wlw5" | "les5" | "lez5" => Box::new(Lesbian5FlagGen),
             "nonbinary" | "enby" | "nb" => Box::new(EnbyFlagGen),
+            "queer" => Box::new(QueerFlagGen),
+            "rainbow" | "lgbt" | "lgbt+" | "lgbtq" | "lgbtq+" | "lgbtqia" | "lgbtqia+" => Box::new(RainbowFlagGen),
             _ => todo!(),
         };
         let mut image = render_berries(berries, args);

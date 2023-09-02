@@ -57,8 +57,17 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Option<Args> {
                     let category = &arg[7..];
                     match category {
                         "bg" => {
-                            println!("--bg=trans - transgender flag (default)");
-                            println!("--bg=enby  - nonbinary flag");
+                            println!("--bg=trans  - - transgender flag (default)");
+                            println!("--bg=aroace - - aroace flag");
+                            println!("--bg=aro  - - - aromantic flag");
+                            println!("--bg=ace  - - - asexual flag");
+                            println!("--bg=bi - - - - bisexual flag");
+                            println!("--bg=enby - - - nonbinary flag");
+                            println!("--bg=gay  - - - gay (men loving men) flag");
+                            println!("--bg=lesbian  - lesbian (women loving women) flag");
+                            println!("--bg=lesbian5 - lesbian flag (5-stripe version)");
+                            println!("--bg=queer  - - queer flag");
+                            println!("--bg=rainbow  - rainbow flag (6-stripe version)");
                         },
                         _ => println!("unknown category {category}"),
                     }
@@ -127,8 +136,17 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Option<Args> {
                 let category = &arg[6..];
                 match category {
                     "bg" => {
-                        println!("/bg=trans - transgender flag (default)");
-                        println!("/bg=enby  - nonbinary flag");
+                        println!("/bg=trans  - - transgender flag (default)");
+                        println!("/bg=aroace - - aroace flag");
+                        println!("/bg=aro  - - - aromantic flag");
+                        println!("/bg=ace  - - - asexual flag");
+                        println!("/bg=bi - - - - bisexual flag");
+                        println!("/bg=enby - - - nonbinary flag");
+                        println!("/bg=gay  - - - gay (men loving men) flag");
+                        println!("/bg=lesbian  - lesbian (women loving women) flag");
+                        println!("/bg=lesbian5 - lesbian flag (5-stripe version)");
+                        println!("/bg=queer  - - queer flag");
+                        println!("/bg=rainbow  - rainbow flag (6-stripe version)");
                     },
                     _ => println!("unknown category {category}"),
                 };
