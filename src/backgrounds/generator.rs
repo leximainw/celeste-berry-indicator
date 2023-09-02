@@ -8,7 +8,7 @@ pub trait Metagenerator {
         Self::get_generator(size).get_pixel(point)
     }
 
-    fn draw_under(image: &mut dyn Image) {
+    fn draw_under(&self, image: &mut dyn Image) {
         let width = image.get_width();
         let height = image.get_height();
         let generator = Self::get_generator((width, height));
