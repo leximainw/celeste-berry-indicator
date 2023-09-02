@@ -39,6 +39,9 @@
             this.ChkHearts = new System.Windows.Forms.CheckBox();
             this.ChkDeaths = new System.Windows.Forms.CheckBox();
             this.LblClickToSave = new System.Windows.Forms.Label();
+            this.LblBackground = new System.Windows.Forms.Label();
+            this.BoxBackground = new System.Windows.Forms.ComboBox();
+            this.ChkSpacing = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.BerryIndicatorImg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumSaveID)).BeginInit();
             this.SuspendLayout();
@@ -108,8 +111,6 @@
             // ChkSpoilers
             // 
             this.ChkSpoilers.AutoSize = true;
-            this.ChkSpoilers.Checked = true;
-            this.ChkSpoilers.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ChkSpoilers.Location = new System.Drawing.Point(12, 77);
             this.ChkSpoilers.Name = "ChkSpoilers";
             this.ChkSpoilers.Size = new System.Drawing.Size(93, 17);
@@ -134,6 +135,8 @@
             // ChkDeaths
             // 
             this.ChkDeaths.AutoSize = true;
+            this.ChkDeaths.Checked = true;
+            this.ChkDeaths.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ChkDeaths.Location = new System.Drawing.Point(202, 77);
             this.ChkDeaths.Name = "ChkDeaths";
             this.ChkDeaths.Size = new System.Drawing.Size(90, 17);
@@ -153,11 +156,56 @@
             this.LblClickToSave.Text = "Click on image to save";
             this.LblClickToSave.Visible = false;
             // 
-            // Form1
+            // LblBackground
+            // 
+            this.LblBackground.AutoSize = true;
+            this.LblBackground.Location = new System.Drawing.Point(12, 103);
+            this.LblBackground.Name = "LblBackground";
+            this.LblBackground.Size = new System.Drawing.Size(68, 13);
+            this.LblBackground.TabIndex = 10;
+            this.LblBackground.Text = "Background:";
+            // 
+            // BoxBackground
+            // 
+            this.BoxBackground.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.BoxBackground.FormattingEnabled = true;
+            this.BoxBackground.Items.AddRange(new object[] {
+            "Transgender",
+            "Aroace",
+            "Aromantic",
+            "Asexual",
+            "Bisexual",
+            "Gay",
+            "Lesbian",
+            "Lesbian5",
+            "Nonbinary",
+            "Queer",
+            "Rainbow"});
+            this.BoxBackground.Location = new System.Drawing.Point(86, 100);
+            this.BoxBackground.Name = "BoxBackground";
+            this.BoxBackground.Size = new System.Drawing.Size(121, 21);
+            this.BoxBackground.TabIndex = 11;
+            this.BoxBackground.SelectedIndexChanged += new System.EventHandler(this.BoxBackground_SelectedIndexChanged);
+            // 
+            // ChkSpacing
+            // 
+            this.ChkSpacing.AutoSize = true;
+            this.ChkSpacing.Location = new System.Drawing.Point(298, 77);
+            this.ChkSpacing.Name = "ChkSpacing";
+            this.ChkSpacing.Size = new System.Drawing.Size(116, 17);
+            this.ChkSpacing.TabIndex = 12;
+            this.ChkSpacing.Text = "Add Heart Spacing";
+            this.ChkSpacing.UseVisualStyleBackColor = true;
+            this.ChkSpacing.CheckedChanged += new System.EventHandler(this.ChkSpacing_CheckedChanged);
+            // 
+            // BerryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 106);
+            this.ClientSize = new System.Drawing.Size(284, 133);
+            this.Controls.Add(this.ChkSpacing);
+            this.Controls.Add(this.BoxBackground);
+            this.Controls.Add(this.LblBackground);
             this.Controls.Add(this.LblClickToSave);
             this.Controls.Add(this.ChkDeaths);
             this.Controls.Add(this.ChkHearts);
@@ -169,7 +217,7 @@
             this.Controls.Add(this.LblSaveFile);
             this.Controls.Add(this.BerryIndicatorImg);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "BerryForm";
             this.Text = "Celeste Berry Indicator";
             ((System.ComponentModel.ISupportInitialize)(this.BerryIndicatorImg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumSaveID)).EndInit();
@@ -190,6 +238,9 @@
         private System.Windows.Forms.CheckBox ChkHearts;
         private System.Windows.Forms.CheckBox ChkDeaths;
         private System.Windows.Forms.Label LblClickToSave;
+        private System.Windows.Forms.Label LblBackground;
+        private System.Windows.Forms.ComboBox BoxBackground;
+        private System.Windows.Forms.CheckBox ChkSpacing;
     }
 }
 

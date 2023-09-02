@@ -28,6 +28,7 @@ namespace BerryIndicator
             int gutterWidth = Size.Width - ClientSize.Width;
             Size = new Size(Math.Max(Width, 480) + gutterWidth, Height + 340);
             BerryIndicatorImg.Size = new Size(480, 340);
+            BoxBackground.SelectedIndex = 0;
             tmpImage = Path.ChangeExtension(Path.GetTempFileName(), "bmp");
         }
 
@@ -45,6 +46,8 @@ namespace BerryIndicator
             ImageParams imgParams = new ImageParams();
             imgParams.saveFile = TxtSaveFile.Text;
             imgParams.tmpFile = tmpImage;
+            imgParams.background = BoxBackground.Text;
+            imgParams.addSpacing = ChkSpacing.Checked;
             imgParams.showDeaths = ChkDeaths.Checked;
             imgParams.showHearts = ChkHearts.Checked;
             imgParams.showSpoilers = ChkSpoilers.Checked;
@@ -65,13 +68,15 @@ namespace BerryIndicator
             }
 
             StringBuilder args = new StringBuilder();
-            args.AppendFormat("\"{0}\" \"{1}\"", imgParams.saveFile, imgParams.tmpFile);
+            args.AppendFormat("\"{0}\" \"{1}\" /bg={2}", imgParams.saveFile, imgParams.tmpFile, imgParams.background);
             if (imgParams.showDeaths)
                 args.Append(" /deaths");
             if (!imgParams.showHearts)
                 args.Append(" /no-hearts");
             if (!imgParams.showSpoilers)
                 args.Append(" /no-spoilers");
+            if (imgParams.addSpacing)
+                args.Append(" /spacing");
 
             ProcessStartInfo info = new ProcessStartInfo("celeste-berry-indicator-win64.exe", args.ToString());
             info.CreateNoWindow = true;
@@ -178,6 +183,16 @@ namespace BerryIndicator
         }
 
         private void ChkDeaths_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateImage();
+        }
+
+        private void ChkSpacing_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateImage();
+        }
+
+        private void BoxBackground_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateImage();
         }
