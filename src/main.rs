@@ -129,12 +129,12 @@ fn render_berries(berries: BerryTracker, berry_row_color: u32, args: args::Args)
     BerryRow::from_vec(berry_row_color, berries.levels[0..usize::min(3, show_until)].iter()
         .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
         .draw(&mut canvas, 25 + death_offset, 22);
-    if show_until > 3 {
+    if !args.hide_incomplete || show_until > 3 {
         BerryRow::from_vec(berry_row_color, berries.levels[3..usize::min(5, show_until)].iter()
             .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
             .draw(&mut canvas, 28 + death_offset, 26);
     }
-    if show_until > 6 {
+    if !args.hide_incomplete || show_until > 6 {
         BerryRow::from_vec(berry_row_color, berries.levels[6..usize::min(8, show_until)].iter()
             .map(|x| x.berries.clone()).collect::<Vec<Vec<bool>>>())
             .draw(&mut canvas, 32 + death_offset, 30);
