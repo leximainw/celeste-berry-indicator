@@ -67,7 +67,10 @@ fn parse_args_core(iter: &mut dyn Iterator<Item=String>) -> Option<Args> {
                             println!("--bg=lesbian  - lesbian (women loving women) flag");
                             println!("--bg=lesbian5 - lesbian flag (5-stripe version)");
                             println!("--bg=queer  - - queer flag");
+                            println!("--bg=intersex - intersex flag");
                             println!("--bg=rainbow  - rainbow flag (6-stripe version)");
+                            println!("--bg=old-progress - progress pride flag");
+                            println!("--bg=progress - intersex progress pride flag");
                         },
                         _ => println!("unknown category {category}"),
                     }

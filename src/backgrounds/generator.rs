@@ -4,7 +4,7 @@ use super::Color;
 pub trait Metagenerator {
     fn get_generator(&self, size: (usize, usize)) -> Box<dyn Generator>;
 
-    fn get_pixel(&self, point: (usize, usize), size: (usize, usize)) -> Color {
+    fn get_pixel(&self, point: (usize, usize), size: (usize, usize)) -> (Color, u16) {
         self.get_generator(size).get_pixel(point)
     }
 
@@ -15,12 +15,12 @@ pub trait Metagenerator {
         for y in 0..height {
             for x in 0..width {
                 let point = (x, y);
-                image.set_pixel(point, Color::alpha_over(image.get_pixel(point), generator.get_pixel(point)));
+                image.set_pixel(point, Color::alpha_over(image.get_pixel(point), generator.get_pixel(point).0));
             }
         }
     }
 }
 
 pub trait Generator {
-    fn get_pixel(&self, point: (usize, usize)) -> Color;
+    fn get_pixel(&self, point: (usize, usize)) -> (Color, u16);
 }

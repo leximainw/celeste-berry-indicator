@@ -18,6 +18,9 @@ use backgrounds::{
     QueerFlagGen,
     RainbowFlagGen,
     TransFlagGen,
+    IntersexFlagGen,
+    ProgressPrideFlagGen,
+    IntersexProgressFlagGen,
 };
 
 use berries::{
@@ -87,7 +90,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "lesbian5" | "wlw5" | "les5" | "lez5" => { berry_row_color = BLUE; Box::new(Lesbian5FlagGen) },
             "nonbinary" | "enby" | "nb" => Box::new(EnbyFlagGen),
             "queer" => Box::new(QueerFlagGen),
+            "intersex" => Box::new(IntersexFlagGen),
             "rainbow" | "lgbt" | "lgbt+" | "lgbtq" | "lgbtq+" | "lgbtqia" | "lgbtqia+" => { berry_row_color = BLUE; Box::new(RainbowFlagGen) },
+            "old-progress" | "old-progress-rainbow" | "old-progress-lgbt" | "old-progress-lgbt+" | "old-progress-lgbtq" | "old-progress-lgbtq+"
+                | "old-progress-lgbtqia" | "old-progress-lgbtqia+" | "progress-old" | "progress-rainbow-old" | "progress-lgbt-old"
+                | "progress-lgbt+-old" | "progress-lgbtq-old" | "progress-lgbtq+-old" | "progress-lgbtqia-old"
+                | "progress-lgbtqia+-old" => { berry_row_color = BLUE; Box::new(ProgressPrideFlagGen) },
+            "progress" | "progress-rainbow" | "progress-lgbt" | "progress-lgbt+" | "progress-lgbtq" | "progress-lgbtq+"
+                | "progress-lgbtqia" | "progress-lgbtqia+" => { berry_row_color = BLUE; Box::new(IntersexProgressFlagGen) },
             _ => return Err(format!("unknown background {}", args.background).into()),
         };
         let mut image = render_berries(berries, berry_row_color, args);
