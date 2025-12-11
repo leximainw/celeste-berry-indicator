@@ -13,22 +13,16 @@ macro_rules! flag_horiz {
 
         impl Metagenerator for $gen {
             fn get_generator(&self, size: (usize, usize)) -> Box<dyn Generator> {
-                Box::new($flag{
-                    width: size.0,
-                    height: size.1,
-                })
+                Box::new($flag(size.1))
             }
         }
 
-        pub struct $flag {
-            width: usize,
-            height: usize,
-        }
+        pub struct $flag(usize);
 
         impl Generator for $flag {
             fn get_pixel(&self, pixel: (usize, usize)) -> Color {
                 const STRIPES: &'static [u32] = $stripes;
-                FlagStripes::stripes(STRIPES, pixel.1, self.height)
+                FlagStripes::stripes(STRIPES, pixel.1, self.0)
             }
         }
     };
