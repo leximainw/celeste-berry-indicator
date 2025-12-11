@@ -28,7 +28,7 @@ pub struct OpaqueCanvas<'a> {
 }
 
 impl OpaqueCanvas<'_> {
-    pub fn from_image(image: &mut dyn Image) -> OpaqueCanvas {
+    pub fn from_image(image: &mut dyn Image) -> OpaqueCanvas<'_> {
         OpaqueCanvas{
             image,
         }
@@ -50,7 +50,7 @@ pub struct FadedCanvas<'a> {
 }
 
 impl FadedCanvas<'_> {
-    pub fn from_image(image: &mut dyn Image) -> FadedCanvas {
+    pub fn from_image(image: &mut dyn Image) -> FadedCanvas<'_> {
         FadedCanvas{
             image,
         }
