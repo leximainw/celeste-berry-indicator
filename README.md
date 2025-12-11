@@ -17,6 +17,8 @@ This utility supports commands to customize the generated output, and to select 
 
 ```
 --help: prints a list of available commands.
+--help:bg: prints a list of available backgrounds.
+--bg={background}: selects a specific background.
 --deaths: renders the save file's death count (off by default).
 --id={0..2}: render the save with the specified ID. The ID range is not validated, so mods which allow extended save files can still be used with this command.
 --no-hearts: only render golden berries, even if a chapter has already been completed.
@@ -25,4 +27,4 @@ This utility supports commands to customize the generated output, and to select 
 --spacing: add spacing between adjacent hearts.
 ```
 
-On Windows, replace all double-dashes (`--`) with a forward slash (`/`).
+The Windows command line utility also supports all commands with forward slashes (replace `--` with `/`).
